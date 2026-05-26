@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WIN × AvTech — From Military Experience to FAA Certification</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;500;600;700&family=Barlow:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+/* ── TOKENS ─────────────────────────────────────────────────── */
+:root {
+  --olive:      #6e7d14;
+  --olive-mid:  #8a9c1a;
+  --olive-hi:   #adc22a;
+  --black:      #080807;
+  --near-black: #0e0e0b;
+  --sand:       #e8e2d4;
+  --white:      #f4f1eb;
+  --ease-film:  cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { background: var(--black); scroll-behavior: smooth; }
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--black);
+  color: var(--sand);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR ─────────────────────────────────────────────────── */
+#cursor {
+  position: fixed;
+  width: 7px; height: 7px;
+  background: var(--olive-hi);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  will-change: transform;
+  mix-blend-mode: difference;
+  transition: width .28s var(--ease-film), height .28s var(--ease-film);
+}
+#cursor.big {
+  width: 42px; height: 42px;
+  background: rgba(173,194,42,.12);
+  border: 1px solid rgba(173,194,42,.55);
+}
+
+/* ── GRAIN ──────────────────────────────────────────────────── */
+#grain {
+  position: fixed; inset: -100px;
+  width: calc(100% + 200px); height: calc(100% + 200px);
+  z-index: 997; pointer-events: none; opacity: .045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px;
+  animation: gr .75s steps(1) infinite;
+}
+@keyframes gr {
+  0%   { transform: translate(0,0) }
+  14%  { transform: translate(-4%,-6%) }
+  28%  { transform: translate(5%,3%) }
+  42%  { transform: translate(-3%,8%) }
+  57%  { transform: translate(7%,-4%) }
+  71%  { transform: translate(-6%,5%) }
+  85%  { transform: translate(3%,-7%) }
+  100% { transform: translate(4%,7%) }
+}
+
+/* ── NAV ────────────────────────────────────────────────────── */
+nav {
+  position: fixed; inset: 0 0 auto;
+  z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 3rem; height: 58px;
+  transition: background .6s ease;
+}
+nav.scrolled { background: rgba(8,8,7,.92); backdrop-filter: blur(14px); }
+.nav-brand {
+  display: flex; align-items: baseline; gap: .5rem;
+  text-decoration: none;
+}
+.nav-win {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem; letter-spacing: .1em; color: var(--white);
+}
+.nav-x {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .7rem; font-weight: 500; letter-spacing: .2em;
+  color: rgba(255,255,255,.28); text-transform: uppercase;
+  padding: 0 .3rem;
+}
+.nav-avtech {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem; letter-spacing: .1em; color: var(--olive-hi);
+}
+.nav-cta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .7rem; font-weight: 700; letter-spacing: .28em;
+  text-transform: uppercase; color: var(--white);
+  text-decoration: none; padding: .48rem 1.6rem;
+  border: 1px solid rgba(255,255,255,.2);
+  position: relative; overflow: hidden; transition: border-color .4s;
+}
+.nav-cta::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--olive); transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .5s var(--ease-film); z-index: -1;
+}
+.nav-cta:hover { border-color: var(--olive-hi); }
+.nav-cta:hover::before { transform: scaleX(1); }
+
+/* ── HERO ───────────────────────────────────────────────────── */
+#hero {
+  position: relative; height: 100vh; min-height: 640px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  overflow: hidden;
+}
+.hero-img-wrap {
+  position: absolute; inset: -18% 0; z-index: 0; will-change: transform;
+}
+.hero-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: center 45%;
+  filter: brightness(.6) contrast(1.08) saturate(.7);
+}
+.hero-grade {
+  position: absolute; inset: 0; z-index: 1;
+  background:
+    linear-gradient(to bottom,
+      rgba(8,8,7,.55) 0%,
+      rgba(8,8,7,.08) 30%,
+      rgba(8,8,7,.44) 65%,
+      rgba(8,8,7,.97) 100%);
+}
+/* Letterbox bars */
+.lb { position: absolute; left: 0; right: 0; height: 68px; background: var(--black); z-index: 3; }
+.lb-top { top: 0; }
+.lb-bot { bottom: 0; }
+
+.hero-body {
+  position: relative; z-index: 4;
+  padding: 0 3rem 5.5rem; max-width: 820px;
+}
+.hero-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .65rem; font-weight: 600; letter-spacing: .34em;
+  text-transform: uppercase; color: var(--olive-hi);
+  margin-bottom: 1.2rem; overflow: hidden;
+}
+.hero-eyebrow span { display: block; transform: translateY(110%); }
+.hero-partnership-badge {
+  display: inline-flex; align-items: center; gap: .7rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem; letter-spacing: .12em;
+  color: rgba(255,255,255,.55);
+  margin-bottom: 1.4rem;
+  border: 1px solid rgba(255,255,255,.1);
+  padding: .4rem 1.1rem;
+  overflow: hidden;
+  opacity: 0;
+}
+.pb-win { color: var(--white); }
+.pb-x   { color: var(--olive); font-size: .9rem; }
+.pb-av  { color: var(--olive-hi); }
+
+.hero-hl-row { display: block; overflow: hidden; }
+.hero-hl-inner {
+  display: block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.2rem, 7.5vw, 6.8rem);
+  line-height: .9; letter-spacing: .02em;
+  color: var(--white);
+  transform: translateY(105%); will-change: transform;
+}
+.hero-hl-inner.olive { color: var(--olive-hi); }
+
+.hero-sub {
+  margin-top: 1.8rem;
+  font-size: clamp(.88rem, 1.6vw, 1.1rem);
+  font-weight: 300; line-height: 1.72;
+  color: rgba(255,255,255,.6); max-width: 580px;
+  overflow: hidden;
+}
+.hero-sub span { display: block; transform: translateY(105%); }
+
+.hero-ctas {
+  display: flex; gap: 1rem; margin-top: 2.8rem;
+  opacity: 0; will-change: opacity, transform;
+  transform: translateY(22px);
+}
+.btn-primary {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .72rem; font-weight: 700; letter-spacing: .28em;
+  text-transform: uppercase; color: var(--black);
+  background: var(--olive-hi); text-decoration: none;
+  padding: .9rem 2.2rem;
+  display: inline-flex; align-items: center; gap: .6rem;
+  transition: background .3s;
+}
+.btn-primary:hover { background: #c5df30; }
+.btn-ghost {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .72rem; font-weight: 700; letter-spacing: .28em;
+  text-transform: uppercase; color: var(--white);
+  text-decoration: none;
+  padding: .9rem 2.2rem;
+  border: 1px solid rgba(255,255,255,.22);
+  display: inline-flex; align-items: center; gap: .6rem;
+  position: relative; overflow: hidden;
+  transition: border-color .4s;
+}
+.btn-ghost::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(255,255,255,.06);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .4s var(--ease-film); z-index: -1;
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,.45); }
+.btn-ghost:hover::before { transform: scaleX(1); }
+
+/* ── SECTION SHARED ─────────────────────────────────────────── */
+section { position: relative; }
+.eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .6rem; font-weight: 600; letter-spacing: .32em;
+  text-transform: uppercase; color: var(--olive-hi);
+  margin-bottom: .8rem;
+}
+.section-rule {
+  width: 0; height: 1px; background: var(--olive);
+  margin-bottom: 2.6rem; will-change: width;
+}
+.reveal-up   { opacity: 0; transform: translateY(30px); will-change: transform, opacity; }
+.reveal-left { opacity: 0; transform: translateX(-30px); will-change: transform, opacity; }
+.reveal-right{ opacity: 0; transform: translateX(30px);  will-change: transform, opacity; }
+
+/* ── PARTNERSHIP OVERVIEW ────────────────────────────────────── */
+#overview {
+  background: #0d1103;
+  padding: 7rem 3rem;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+#overview::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(110,125,20,.18) 0%, transparent 60%);
+  pointer-events: none;
+}
+.overview-inner {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1fr 1.1fr;
+  gap: 5rem; max-width: 1200px; margin: 0 auto;
+  align-items: start;
+}
+.overview-left h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.8rem, 5.5vw, 4.8rem);
+  line-height: .88; letter-spacing: .03em;
+  color: var(--white); margin-bottom: 1.8rem;
+}
+.overview-left h2 em { color: var(--olive-hi); font-style: normal; }
+.overview-body {
+  font-size: .9rem; font-weight: 300;
+  line-height: 1.78; color: rgba(255,255,255,.55);
+  margin-bottom: 1.1rem;
+}
+.overview-stat-row {
+  display: flex; gap: 2rem; margin-top: 2.4rem;
+  border-top: 1px solid rgba(255,255,255,.07);
+  padding-top: 2rem;
+}
+.overview-stat-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem; letter-spacing: .04em; color: var(--olive-hi);
+  line-height: 1;
+}
+.overview-stat-d {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .56rem; font-weight: 600; letter-spacing: .16em;
+  text-transform: uppercase; color: rgba(255,255,255,.3);
+  margin-top: .2rem; line-height: 1.4;
+}
+/* Partner logos / cards */
+.partner-cards {
+  display: flex; flex-direction: column; gap: 1px;
+  background: rgba(255,255,255,.06);
+}
+.partner-card {
+  background: rgba(8,8,7,.88);
+  padding: 2.2rem 2rem;
+  position: relative;
+  transition: background .35s;
+}
+.partner-card:hover { background: rgba(110,125,20,.12); }
+.partner-card-badge {
+  display: inline-block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .52rem; font-weight: 700; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--olive-hi);
+  border: 1px solid rgba(173,194,42,.3);
+  padding: .2rem .7rem; margin-bottom: .9rem;
+}
+.partner-card-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem; letter-spacing: .06em; color: var(--white);
+  margin-bottom: .5rem; line-height: 1;
+}
+.partner-card-sub {
+  font-size: .72rem; font-weight: 300; line-height: 1.6;
+  color: rgba(255,255,255,.42);
+}
+.partner-card-accent {
+  position: absolute; top: 0; left: 0;
+  width: 3px; height: 0;
+  background: var(--olive-hi);
+  transition: height .5s var(--ease-film);
+}
+.partner-card:hover .partner-card-accent { height: 100%; }
+
+/* ── PROBLEM SECTION ─────────────────────────────────────────── */
+#problem {
+  padding: 0;
+  display: grid; grid-template-columns: 1fr 1.4fr;
+  min-height: 520px;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+.problem-img {
+  position: relative; overflow: hidden;
+}
+.problem-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: center 40%;
+  filter: brightness(.38) contrast(1.1) saturate(.22) sepia(.25);
+}
+.problem-img::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(to right, transparent 55%, var(--near-black) 100%),
+    linear-gradient(135deg, rgba(40,52,5,.35) 0%, transparent 55%);
+}
+.problem-text {
+  background: var(--near-black);
+  padding: 6rem 4rem;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.problem-hed {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
+  line-height: .88; color: var(--white);
+  letter-spacing: .03em; margin-bottom: 2rem;
+}
+.problem-hed em { color: var(--olive-hi); font-style: normal; display: block; }
+.problem-body {
+  font-size: .88rem; font-weight: 300;
+  line-height: 1.76; color: rgba(255,255,255,.5);
+  margin-bottom: .9rem;
+}
+.problem-callout {
+  margin-top: 2rem;
+  border-left: 2px solid var(--olive);
+  padding: 1.2rem 1.6rem;
+  background: rgba(110,125,20,.07);
+  font-size: .84rem; font-weight: 300;
+  line-height: 1.7; color: rgba(255,255,255,.65);
+  font-style: italic;
+}
+
+/* ── SOLUTION SECTION ────────────────────────────────────────── */
+#solution {
+  background: var(--black);
+  padding: 7rem 3rem;
+  border-top: 1px solid rgba(255,255,255,.06);
+  text-align: center;
+}
+.solution-inner { max-width: 760px; margin: 0 auto; }
+.solution-hed {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.6rem, 5vw, 4.8rem);
+  line-height: .9; letter-spacing: .03em; color: var(--white);
+  margin-bottom: 1.6rem;
+}
+.solution-hed em { color: var(--olive-hi); font-style: normal; }
+.solution-body {
+  font-size: .9rem; font-weight: 300;
+  line-height: 1.78; color: rgba(255,255,255,.52);
+  margin-bottom: 3.6rem;
+}
+.solution-pillars {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: rgba(255,255,255,.06);
+  text-align: left;
+}
+.pillar {
+  background: var(--black);
+  padding: 2.2rem 1.8rem;
+  transition: background .35s;
+}
+.pillar:hover { background: rgba(110,125,20,.1); }
+.pillar-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3.2rem; letter-spacing: .04em;
+  color: rgba(173,194,42,.18); line-height: 1;
+  margin-bottom: .4rem;
+}
+.pillar-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .78rem; font-weight: 700; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--olive-hi);
+  margin-bottom: .7rem;
+}
+.pillar-body {
+  font-size: .76rem; font-weight: 300;
+  line-height: 1.65; color: rgba(255,255,255,.45);
+}
+
+/* ── SOLUTION IMAGE STRIP ─────────────────────────────────────── */
+.solution-images {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: rgba(255,255,255,.04);
+  margin-top: 3.5rem;
+  height: 320px; overflow: hidden;
+  text-align: left;
+}
+.sol-img-wrap {
+  position: relative; overflow: hidden;
+}
+.sol-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: center 22%;
+  filter: brightness(.38) contrast(1.12) saturate(.24) sepia(.22);
+  transition: transform .9s var(--ease-film);
+}
+.sol-img-wrap:hover img { transform: scale(1.05); }
+.sol-img-overlay {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(to top, rgba(8,8,7,.92) 0%, rgba(40,52,5,.32) 45%, transparent 100%);
+  pointer-events: none;
+}
+.sol-img-label {
+  position: absolute; bottom: 1.6rem; left: 1.8rem; z-index: 2;
+}
+.sol-img-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .5rem; font-weight: 700; letter-spacing: .24em;
+  text-transform: uppercase; color: var(--olive-hi);
+  margin-bottom: .3rem;
+}
+.sol-img-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem; letter-spacing: .06em; color: var(--white);
+  line-height: 1;
+}
+
+/* ── WIN vs AVTECH SPLIT ─────────────────────────────────────── */
+#provides {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border-top: 1px solid rgba(255,255,255,.06);
+  min-height: 560px;
+}
+.provides-panel {
+  padding: 5.5rem 4rem;
+  position: relative; overflow: hidden;
+}
+.provides-panel.win-panel {
+  background: rgba(14,14,11,.95);
+  border-right: 1px solid rgba(255,255,255,.06);
+}
+.provides-panel.av-panel {
+  background: #080d01;
+}
+.provides-panel-bg {
+  position: absolute; inset: 0; z-index: 0;
+  opacity: .04;
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23adc22a' fill-opacity='1'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 40px;
+}
+.provides-inner { position: relative; z-index: 1; }
+.provides-org {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .58rem; font-weight: 700; letter-spacing: .3em;
+  text-transform: uppercase; color: var(--olive-hi);
+  margin-bottom: .5rem;
+}
+.provides-hed {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  letter-spacing: .05em; color: var(--white);
+  line-height: .92; margin-bottom: 2.2rem;
+}
+.provides-list {
+  list-style: none;
+  display: flex; flex-direction: column; gap: .9rem;
+}
+.provides-list li {
+  display: grid; grid-template-columns: 1.4rem 1fr;
+  gap: .5rem; align-items: start;
+  font-size: .82rem; font-weight: 300;
+  line-height: 1.6; color: rgba(255,255,255,.55);
+  padding-bottom: .9rem;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.provides-list li:last-child { border-bottom: none; }
+.provides-list li::before {
+  content: '★';
+  color: var(--olive-hi); font-size: .6rem;
+  margin-top: .3rem;
+}
+
+/* ── HOW IT WORKS ────────────────────────────────────────────── */
+#how {
+  background: var(--near-black);
+  padding: 7rem 3rem;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+.how-inner { max-width: 1200px; margin: 0 auto; }
+.how-header {
+  display: flex; align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 4rem;
+}
+.how-hed {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.8rem, 5.5vw, 5rem);
+  line-height: .88; letter-spacing: .03em; color: var(--white);
+}
+.how-hed em { color: var(--olive-hi); font-style: normal; }
+.how-sub-note {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .6rem; font-weight: 600; letter-spacing: .2em;
+  text-transform: uppercase; color: rgba(255,255,255,.2);
+  padding-bottom: .5rem;
+}
+.steps {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: rgba(255,255,255,.06);
+}
+.step-card {
+  background: var(--near-black);
+  padding: 2.8rem 2rem 2.6rem;
+  position: relative;
+  transition: background .35s;
+  overflow: hidden;
+}
+.step-card:hover { background: rgba(14,18,2,.98); }
+.step-card::before {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 0;
+  background: linear-gradient(to top, rgba(110,125,20,.14), transparent);
+  transition: height .5s var(--ease-film);
+}
+.step-card:hover::before { height: 100%; }
+.step-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 4.5rem; letter-spacing: .03em;
+  color: rgba(173,194,42,.12); line-height: 1;
+  margin-bottom: .2rem; position: relative; z-index: 1;
+}
+.step-org {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .52rem; font-weight: 700; letter-spacing: .22em;
+  text-transform: uppercase;
+  margin-bottom: .6rem; position: relative; z-index: 1;
+}
+.step-org.win  { color: var(--olive-hi); }
+.step-org.av   { color: rgba(173,194,42,.6); }
+.step-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.45rem; letter-spacing: .05em; color: var(--white);
+  line-height: 1.1; margin-bottom: .9rem;
+  position: relative; z-index: 1;
+}
+.step-body {
+  font-size: .74rem; font-weight: 300;
+  line-height: 1.65; color: rgba(255,255,255,.42);
+  position: relative; z-index: 1;
+}
+.step-connector {
+  position: absolute; right: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 1px; height: 60%;
+  background: linear-gradient(to bottom, transparent, rgba(173,194,42,.3), transparent);
+}
+.step-card:last-child .step-connector { display: none; }
+
+/* ── WHY IT MATTERS ──────────────────────────────────────────── */
+#why {
+  background: var(--black);
+  border-top: 1px solid rgba(255,255,255,.06);
+  display: grid; grid-template-columns: 1.1fr 1fr;
+  min-height: 480px;
+}
+.why-text {
+  padding: 6rem 4rem;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.why-hed {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.6rem, 4.8vw, 4.2rem);
+  line-height: .88; letter-spacing: .03em; color: var(--white);
+  margin-bottom: 2rem;
+}
+.why-hed em { color: var(--olive-hi); font-style: normal; display: block; }
+.why-body {
+  font-size: .88rem; font-weight: 300;
+  line-height: 1.76; color: rgba(255,255,255,.5);
+  margin-bottom: .9rem;
+}
+.why-quote {
+  margin-top: 2.4rem;
+  border-left: 2px solid var(--olive-hi);
+  padding: 1.2rem 1.6rem;
+  font-size: 1.05rem; font-weight: 300; font-style: italic;
+  line-height: 1.7; color: rgba(255,255,255,.72);
+}
+.why-visual {
+  position: relative; overflow: hidden;
+}
+.why-visual img {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: center 45%;
+  filter: brightness(.45) contrast(1.08) saturate(.3) sepia(.12);
+}
+.why-visual::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(to right, var(--black) 0%, transparent 35%),
+    linear-gradient(135deg, rgba(40,52,5,.3) 0%, transparent 60%);
+}
+.why-stat-overlay {
+  position: absolute; bottom: 2.4rem; right: 2.4rem;
+  z-index: 2;
+  background: rgba(8,8,7,.88);
+  border: 1px solid rgba(173,194,42,.25);
+  padding: 1.4rem 1.6rem;
+  text-align: right;
+  backdrop-filter: blur(8px);
+}
+.why-stat-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.8rem; letter-spacing: .04em;
+  color: var(--olive-hi); line-height: 1;
+}
+.why-stat-d {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .52rem; font-weight: 600; letter-spacing: .18em;
+  text-transform: uppercase; color: rgba(255,255,255,.3);
+  margin-top: .25rem;
+}
+
+/* ── START YOUR PATH CTA ─────────────────────────────────────── */
+#start {
+  background: linear-gradient(to bottom, #0d1103, #080d01);
+  padding: 8rem 3rem;
+  border-top: 1px solid rgba(173,194,42,.15);
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+#start::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 50%,
+      rgba(110,125,20,.14) 0%, transparent 70%);
+  pointer-events: none;
+}
+.start-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+.start-hed {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 6.5vw, 6rem);
+  line-height: .88; letter-spacing: .03em; color: var(--white);
+  margin-bottom: 1rem;
+}
+.start-hed em { color: var(--olive-hi); font-style: normal; }
+.start-body {
+  font-size: .9rem; font-weight: 300;
+  line-height: 1.76; color: rgba(255,255,255,.5);
+  margin-bottom: 2.6rem;
+}
+.start-note {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .58rem; font-weight: 500; letter-spacing: .18em;
+  text-transform: uppercase; color: rgba(255,255,255,.22);
+  margin-top: 1.4rem;
+}
+/* Inline intake strip */
+.start-intake-strip {
+  margin-top: 4rem; text-align: left;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.07);
+  padding: 2.6rem 2.8rem;
+}
+.sil-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .58rem; font-weight: 700; letter-spacing: .28em;
+  text-transform: uppercase; color: var(--olive-hi);
+  margin-bottom: 1.2rem;
+}
+.sil-fields {
+  display: grid; grid-template-columns: 1fr 1fr 1fr auto;
+  gap: .7rem; align-items: end;
+}
+.sil-field { display: flex; flex-direction: column; gap: .3rem; }
+.sil-field label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .56rem; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: rgba(255,255,255,.35);
+}
+.sil-field input, .sil-field select {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  color: var(--white);
+  font-family: 'Barlow', sans-serif;
+  font-size: .78rem; padding: .65rem .85rem;
+  outline: none; width: 100%;
+  transition: border-color .2s;
+  appearance: none; -webkit-appearance: none;
+}
+.sil-field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right .8rem center;
+  padding-right: 2rem;
+}
+.sil-field select option { background: #1a1a10; color: var(--white); }
+.sil-field input:focus, .sil-field select:focus {
+  border-color: rgba(173,194,42,.5);
+  background: rgba(255,255,255,.07);
+}
+.sil-field input::placeholder { color: rgba(255,255,255,.2); }
+.sil-submit {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .72rem; font-weight: 700; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--black);
+  background: var(--olive-hi); border: none;
+  padding: .66rem 1.6rem; cursor: pointer;
+  white-space: nowrap;
+  transition: background .25s;
+}
+.sil-submit:hover { background: #c5df30; }
+
+/* ── EMPLOYERS SECTION ───────────────────────────────────────── */
+#employers {
+  background: var(--near-black);
+  border-top: 1px solid rgba(255,255,255,.07);
+  padding: 0 3rem 7rem;
+  overflow: hidden;
+}
+
+/* Employers image strip — full bleed at section top */
+.emp-img-strip {
+  width: calc(100% + 6rem);
+  margin-left: -3rem;
+  margin-right: -3rem;
+  height: 300px;
+  position: relative; overflow: hidden;
+  margin-bottom: 5rem;
+}
+.emp-img-strip img {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: center 52%;
+  filter: brightness(.35) contrast(1.12) saturate(.22) sepia(.18);
+}
+.emp-img-strip::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(to top, rgba(14,14,11,1) 0%, rgba(14,14,11,.08) 50%, rgba(14,14,11,.82) 100%),
+    linear-gradient(to right, rgba(14,14,11,.7) 0%, transparent 38%),
+    linear-gradient(135deg, rgba(40,52,5,.35) 0%, transparent 50%);
+}
+.emp-strip-caption {
+  position: absolute; bottom: 2rem; left: 3rem;
+  z-index: 2;
+}
+.emp-strip-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .56rem; font-weight: 700; letter-spacing: .28em;
+  text-transform: uppercase; color: var(--olive-hi);
+  margin-bottom: .4rem;
+}
+.emp-strip-hed {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: .04em; color: var(--white);
+  line-height: 1;
+}
+
+.employers-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1.2fr;
+  gap: 5rem; align-items: center;
+}
+.employers-left .emp-hed {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.6rem, 4.8vw, 4.2rem);
+  line-height: .88; color: var(--white);
+  letter-spacing: .03em; margin-bottom: 1.8rem;
+}
+.employers-left .emp-hed em { color: var(--olive-hi); font-style: normal; display: block; }
+.employers-left .emp-body {
+  font-size: .88rem; font-weight: 300;
+  line-height: 1.76; color: rgba(255,255,255,.5);
+  margin-bottom: 2.4rem;
+}
+.emp-contact-row {
+  display: flex; flex-direction: column; gap: .9rem;
+}
+.emp-contact-item {
+  display: flex; align-items: center; gap: .8rem;
+  font-size: .8rem; font-weight: 300;
+  color: rgba(255,255,255,.45);
+}
+.emp-contact-icon {
+  width: 30px; height: 30px;
+  border: 1px solid rgba(173,194,42,.25);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--olive-hi); font-size: .75rem;
+  flex-shrink: 0;
+}
+.emp-contact-link { color: var(--olive-hi); text-decoration: none; }
+.emp-contact-link:hover { color: var(--white); }
+/* Feature tiles */
+.emp-tiles {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: rgba(255,255,255,.06);
+}
+.emp-tile {
+  background: var(--near-black);
+  padding: 2rem 1.8rem;
+  transition: background .35s;
+}
+.emp-tile:hover { background: rgba(110,125,20,.1); }
+.emp-tile-icon {
+  color: var(--olive-hi); margin-bottom: .8rem;
+}
+.emp-tile-icon svg { width: 28px; height: 28px; }
+.emp-tile-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.15rem; letter-spacing: .05em;
+  color: var(--white); margin-bottom: .5rem;
+}
+.emp-tile-body {
+  font-size: .72rem; font-weight: 300;
+  line-height: 1.6; color: rgba(255,255,255,.4);
+}
+
+/* ── FOOTER BAR ──────────────────────────────────────────────── */
+footer {
+  background: var(--black);
+  border-top: 1px solid rgba(255,255,255,.06);
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.4rem 3rem;
+}
+.footer-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: .95rem; letter-spacing: .12em;
+  color: rgba(255,255,255,.3);
+}
+.footer-brand em { color: var(--olive-hi); font-style: normal; }
+.footer-note {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .52rem; font-weight: 500; letter-spacing: .18em;
+  text-transform: uppercase; color: rgba(255,255,255,.18);
+}
+.footer-links {
+  display: flex; gap: 1.4rem;
+}
+.footer-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .6rem; font-weight: 600; letter-spacing: .2em;
+  text-transform: uppercase; color: rgba(255,255,255,.28);
+  text-decoration: none; transition: color .3s;
+}
+.footer-links a:hover { color: var(--olive-hi); }
+
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
+@media (max-width: 980px) {
+  body { cursor: auto; }
+  #cursor { display: none; }
+  nav { padding: 0 1.4rem; }
+  .nav-x, .nav-avtech { display: none; }
+  .hero-body { padding: 0 1.4rem 5rem; }
+  .overview-inner { grid-template-columns: 1fr; gap: 3rem; }
+  #problem { grid-template-columns: 1fr; }
+  .problem-img { height: 280px; }
+  .problem-img::after { background: linear-gradient(to bottom, transparent 55%, var(--near-black) 100%); }
+  .solution-pillars { grid-template-columns: 1fr; }
+  .solution-images { height: 240px; margin-top: 2.5rem; }
+  #provides { grid-template-columns: 1fr; }
+  .provides-panel { padding: 4rem 2rem; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  #why { grid-template-columns: 1fr; }
+  .why-visual { height: 320px; }
+  .why-visual::after {
+    background:
+      linear-gradient(to bottom, var(--black) 0%, transparent 30%),
+      linear-gradient(135deg, rgba(40,52,5,.3) 0%, transparent 60%);
+  }
+  .start-intake-strip .sil-fields { grid-template-columns: 1fr 1fr; }
+  #employers { padding: 0 1.6rem 5rem; }
+  .emp-img-strip {
+    width: calc(100% + 3.2rem);
+    margin-left: -1.6rem;
+    margin-right: -1.6rem;
+    height: 220px;
+    margin-bottom: 3.5rem;
+  }
+  .emp-strip-caption { left: 1.6rem; bottom: 1.4rem; }
+  .employers-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .emp-tiles { grid-template-columns: 1fr; }
+  #overview, #solution, #how, #start { padding: 5rem 1.6rem; }
+  .problem-text { padding: 4rem 1.6rem; }
+  .why-text { padding: 4rem 1.6rem; }
+  .overview-stat-row { flex-wrap: wrap; gap: 1.5rem; }
+  footer { flex-direction: column; gap: .8rem; padding: 1.2rem 1.4rem; text-align: center; }
+  .footer-links { flex-wrap: wrap; justify-content: center; }
+}
+@media (max-width: 580px) {
+  .lb { height: 44px; }
+  .hero-body { padding: 0 1.1rem 4.5rem; }
+  .steps { grid-template-columns: 1fr; }
+  .start-intake-strip .sil-fields { grid-template-columns: 1fr; }
+  .provides-panel { padding: 3rem 1.4rem; }
+  .how-header { flex-direction: column; align-items: flex-start; gap: .8rem; }
+  #overview, #solution, #how, #start { padding: 4rem 1.1rem; }
+  #employers { padding: 0 1.1rem 4rem; }
+  .emp-img-strip {
+    width: calc(100% + 2.2rem);
+    margin-left: -1.1rem;
+    margin-right: -1.1rem;
+    height: 180px;
+    margin-bottom: 3rem;
+  }
+  .emp-strip-caption { left: 1.2rem; bottom: 1.2rem; }
+  .problem-text, .why-text { padding: 3rem 1.1rem; }
+  .solution-images { grid-template-columns: 1fr; height: 340px; }
+  .sol-img-wrap:last-child { display: none; }
+  .start-intake-strip { padding: 1.8rem 1.4rem; }
+  .nav-cta { display: none; }
+  .hero-ctas { flex-direction: column; }
+  .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
+  footer { padding: 1rem 1.1rem; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="grain"></div>
+
+<!-- NAV -->
+<nav id="sitenav">
+  <a class="nav-brand" href="index.html">
+    <span class="nav-win">WIN</span>
+    <span class="nav-x">×</span>
+    <span class="nav-avtech">AvTech</span>
+  </a>
+  <a href="#start" class="nav-cta">Start Your Intake</a>
+</nav>
+
+<!-- ══ HERO ═══════════════════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-img-wrap" id="hero-img">
+    <img
+      src="https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?w=1600&q=80&fit=crop&crop=center"
+      alt="Military aviation maintenance technician working on aircraft in hangar"
+      loading="eager" fetchpriority="high"
+    />
+  </div>
+  <div class="hero-grade"></div>
+  <div class="lb lb-top" id="lbt"></div>
+  <div class="lb lb-bot" id="lbb"></div>
+
+  <div class="hero-body">
+    <div class="hero-eyebrow"><span id="hero-eyebrow-span">Warriors In Need × AvTech Exams — Partnership</span></div>
+    <div class="hero-partnership-badge" id="hero-badge">
+      <span class="pb-win">WIN</span>
+      <span class="pb-x">×</span>
+      <span class="pb-av">AvTech Exams</span>
+    </div>
+    <div class="hero-hl-row"><span class="hero-hl-inner" id="hl1">From Military</span></div>
+    <div class="hero-hl-row"><span class="hero-hl-inner" id="hl2">Experience</span></div>
+    <div class="hero-hl-row"><span class="hero-hl-inner olive" id="hl3">to FAA Certification.</span></div>
+    <div class="hero-sub" id="hero-sub">
+      <span>A direct, end-to-end pathway for service members and veterans to complete A&P certification and transition into civilian aviation careers.</span>
+    </div>
+    <div class="hero-ctas" id="hero-ctas">
+      <a href="#start" class="btn-primary">Start Your Intake ↗</a>
+      <a href="#employers" class="btn-ghost">For Employers &amp; Partners →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PARTNERSHIP OVERVIEW ═══════════════════════════════════════════════ -->
+<section id="overview">
+  <div class="overview-inner">
+    <div class="overview-left reveal-left">
+      <div class="eyebrow">A Proven Pathway</div>
+      <div class="section-rule" id="ov-rule"></div>
+      <h2>Built for<br><em>Service Members.</em></h2>
+      <p class="overview-body">AvTech Exams has been preparing candidates for FAA certification for over 30 years and is strategically located in Southern California — one of the largest aviation hubs in the country. Founded by a veteran, AvTech understands the discipline and capability service members bring.</p>
+      <p class="overview-body">Warriors In Need complements this by removing the barriers that often prevent completion — including funding, guidance, and career transition support. Together, this partnership is the most direct path from service to civilian aviation career.</p>
+      <div class="overview-stat-row">
+        <div>
+          <div class="overview-stat-n">30+</div>
+          <div class="overview-stat-d">Years AvTech<br>Has Prepared Candidates</div>
+        </div>
+        <div>
+          <div class="overview-stat-n">A&amp;P</div>
+          <div class="overview-stat-d">Airframe &amp; Powerplant<br>Full Certification Path</div>
+        </div>
+        <div>
+          <div class="overview-stat-n">SoCal</div>
+          <div class="overview-stat-d">Largest Aviation<br>Hub in the Country</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal-right">
+      <div class="partner-cards">
+        <div class="partner-card">
+          <div class="partner-card-accent"></div>
+          <div class="partner-card-badge">Veteran-Led Nonprofit</div>
+          <div class="partner-card-name">Warriors In Need</div>
+          <div class="partner-card-sub">Guidance, funding support, career transition, placement, and ongoing mentorship — removing every barrier between service and certification.</div>
+        </div>
+        <div class="partner-card">
+          <div class="partner-card-accent"></div>
+          <div class="partner-card-badge">Founded by a Veteran · 30+ Years</div>
+          <div class="partner-card-name">AvTech Exams</div>
+          <div class="partner-card-sub">Structured written and practical preparation, accelerated O&P programs, and direct coordination with FAA Designated Mechanic Examiners.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ THE PROBLEM ════════════════════════════════════════════════════════ -->
+<section id="problem">
+  <div class="problem-img">
+    <!-- the problem.jpg: classroom instructor — training exists, the certified path doesn't -->
+    <img
+      src="assets/images/the-problem.jpg"
+      alt="Aviation maintenance training classroom — instructor leading a session"
+      loading="lazy"
+    />
+  </div>
+  <div class="problem-text">
+    <div class="reveal-up">
+      <div class="eyebrow">The Problem</div>
+      <div class="section-rule" id="prob-rule"></div>
+      <h2 class="problem-hed">The Skills Are<br>There.<em>The Path Isn't.</em></h2>
+      <p class="problem-body">Highly skilled military aviation professionals leave service every year without FAA certification — not because they lack experience, but because the process is complex, time-sensitive, and difficult to navigate alone.</p>
+      <p class="problem-body">Without the right support, many never complete certification and are unable to enter the civilian aviation workforce — despite years of hands-on experience maintaining some of the most advanced aircraft in the world.</p>
+      <div class="problem-callout">
+        "The gap isn't ability — it's access. Most programs stop at training. This one doesn't."
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ THE SOLUTION ═══════════════════════════════════════════════════════ -->
+<section id="solution">
+  <div class="solution-inner">
+    <div class="reveal-up">
+      <div class="eyebrow">The Solution</div>
+      <h2 class="solution-hed">A Complete Path from<br><em>Service to Certification.</em></h2>
+      <p class="solution-body">This partnership creates a structured, supported pathway that ensures service members and veterans don't just prepare — they complete certification and move directly into the workforce.</p>
+    </div>
+    <div class="solution-pillars">
+      <div class="pillar reveal-up">
+        <div class="pillar-num">01</div>
+        <div class="pillar-title">Preparation</div>
+        <p class="pillar-body">Structured written and oral & practical preparation through AvTech's 30-year proven programs, designed specifically for military-trained candidates.</p>
+      </div>
+      <div class="pillar reveal-up">
+        <div class="pillar-num">02</div>
+        <div class="pillar-title">Certification</div>
+        <p class="pillar-body">Full FAA A&P certification — Airframe & Powerplant — with direct coordination with Designated Mechanic Examiners and WIN's support throughout.</p>
+      </div>
+      <div class="pillar reveal-up">
+        <div class="pillar-num">03</div>
+        <div class="pillar-title">Employment</div>
+        <p class="pillar-body">WIN's employer network, job placement support, and ongoing career mentorship ensure certification leads directly to stable, purpose-driven civilian aviation careers.</p>
+      </div>
+    </div>
+
+    <!-- complete path.jpg + complete path 2.jpg: certificate duo — proof of completion -->
+    <div class="solution-images reveal-up">
+      <div class="sol-img-wrap">
+        <img
+          src="assets/images/complete-path.jpg"
+          alt="AvTech graduate holding FAA A&P Certificate of Award at training center"
+          loading="lazy"
+        />
+        <div class="sol-img-overlay"></div>
+        <div class="sol-img-label">
+          <div class="sol-img-eyebrow">Certified</div>
+          <div class="sol-img-name">The Complete Path</div>
+        </div>
+      </div>
+      <div class="sol-img-wrap">
+        <img
+          src="assets/images/complete-path-2.jpg"
+          alt="A&P certified graduate — AvTech Aviation Maintenance Training Center"
+          loading="lazy"
+        />
+        <div class="sol-img-overlay"></div>
+        <div class="sol-img-label">
+          <div class="sol-img-eyebrow">A&amp;P Certified</div>
+          <div class="sol-img-name">Ready to Work</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ WIN & AVTECH PROVIDES ══════════════════════════════════════════════ -->
+<section id="provides">
+  <div class="provides-panel win-panel reveal-left">
+    <div class="provides-panel-bg"></div>
+    <div class="provides-inner">
+      <div class="provides-org">Warriors In Need (WIN)</div>
+      <h3 class="provides-hed">What WIN<br>Provides</h3>
+      <ul class="provides-list">
+        <li>Guidance through FAA eligibility pathways and regulatory requirements</li>
+        <li>Funding support for testing fees and required tools</li>
+        <li>Career transition planning and employer placement support</li>
+        <li>Ongoing mentorship throughout the certification journey and beyond</li>
+      </ul>
+    </div>
+  </div>
+  <div class="provides-panel av-panel reveal-right">
+    <div class="provides-panel-bg"></div>
+    <div class="provides-inner">
+      <div class="provides-org">AvTech Exams</div>
+      <h3 class="provides-hed">What AvTech<br>Provides</h3>
+      <ul class="provides-list">
+        <li>Structured, proven written exam preparation programs for General, Airframe, and Powerplant</li>
+        <li>Accelerated Oral & Practical (O&P) preparation tailored to military experience</li>
+        <li>30+ years of FAA certification training built on real-world expertise</li>
+        <li>Direct coordination with FAA Designated Mechanic Examiners for seamless testing</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HOW IT WORKS ═══════════════════════════════════════════════════════ -->
+<section id="how">
+  <div class="how-inner">
+    <div class="how-header">
+      <h2 class="how-hed reveal-left">How It<br><em>Works.</em></h2>
+      <div class="how-sub-note reveal-right">Four Steps · Start to Finish</div>
+    </div>
+    <div class="steps">
+      <div class="step-card reveal-up">
+        <div class="step-connector"></div>
+        <div class="step-num">01</div>
+        <div class="step-org win">Warriors In Need</div>
+        <div class="step-title">Intake &amp; Eligibility Review</div>
+        <p class="step-body">Service members complete a short intake form. WIN's team reviews military experience and determines the appropriate FAA certification pathway.</p>
+      </div>
+      <div class="step-card reveal-up">
+        <div class="step-connector"></div>
+        <div class="step-num">02</div>
+        <div class="step-org av">AvTech Exams</div>
+        <div class="step-title">Test Preparation</div>
+        <p class="step-body">Candidates complete structured written and practical preparation through AvTech's proven, accelerated programs — built to translate military training into FAA readiness.</p>
+      </div>
+      <div class="step-card reveal-up">
+        <div class="step-connector"></div>
+        <div class="step-num">03</div>
+        <div class="step-org av">AvTech + FAA</div>
+        <div class="step-title">FAA Certification</div>
+        <p class="step-body">Candidates complete all FAA testing — General, Airframe, and Powerplant — and obtain their A&P certification through AvTech's coordinated examiner network.</p>
+      </div>
+      <div class="step-card reveal-up">
+        <div class="step-num">04</div>
+        <div class="step-org win">Warriors In Need</div>
+        <div class="step-title">Transition to Employment</div>
+        <p class="step-body">WIN supports job placement, employer connections, and long-term career success — ensuring certification becomes a stable, purpose-driven civilian aviation career.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHY IT MATTERS ═════════════════════════════════════════════════════ -->
+<section id="why">
+  <div class="why-text">
+    <div class="reveal-left">
+      <div class="eyebrow">Why This Partnership Matters</div>
+      <div class="section-rule" id="why-rule"></div>
+      <h2 class="why-hed">Most Programs<br>Stop at Training.<em>This One Doesn't.</em></h2>
+      <p class="why-body">By addressing barriers before and during transition, this model helps service members move directly into stable, purpose-driven careers in aviation — without the gaps that cause so many qualified veterans to fall through.</p>
+      <p class="why-body">This pathway is designed for completion: connecting preparation, certification, and employment into one seamless, supported process. No gaps. No abandoned momentum.</p>
+      <div class="why-quote">
+        "The United States has already invested in training these veterans. This partnership ensures that investment is finally, fully realized."
+      </div>
+    </div>
+  </div>
+  <div class="why-visual">
+    <!-- partnership matters.jpg: hands-on engine training — partnership in literal action -->
+    <img
+      src="assets/images/partnership-matters.jpg"
+      alt="WIN and AvTech students and instructor working hands-on with aircraft engine"
+      loading="lazy"
+    />
+    <div class="why-stat-overlay">
+      <div class="why-stat-n">&lt;10%</div>
+      <div class="why-stat-d">of military mechanics<br>enter civilian aviation<br>without support</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ START YOUR PATH ════════════════════════════════════════════════════ -->
+<section id="start">
+  <div class="start-inner">
+    <div class="reveal-up">
+      <div class="eyebrow">Start Your Path</div>
+      <h2 class="start-hed">Your Certification<br>Starts <em>Here.</em></h2>
+      <p class="start-body">Service members and veterans: start your path to FAA A&P certification today. Our team will review your background, determine your eligibility, and guide you through every step toward certification and employment.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="https://warriorsinneed.org#intake" class="btn-primary">Start Your Intake ↗</a>
+      </div>
+      <div class="start-note">No commitment required. Takes less than 2 minutes to get started.</div>
+    </div>
+
+    <div class="start-intake-strip reveal-up">
+      <div class="sil-eyebrow">Quick Start — Tell Us About Yourself</div>
+      <div class="sil-fields">
+        <div class="sil-field">
+          <label>Full Name</label>
+          <input type="text" placeholder="First & Last Name"/>
+        </div>
+        <div class="sil-field">
+          <label>Email Address</label>
+          <input type="email" placeholder="name@example.com"/>
+        </div>
+        <div class="sil-field">
+          <label>Branch of Service</label>
+          <select>
+            <option value="">Select Branch</option>
+            <option>Air Force</option><option>Army</option><option>Coast Guard</option>
+            <option>Marine Corps</option><option>Navy</option><option>Space Force</option>
+            <option>National Guard</option><option>Reserve</option>
+          </select>
+        </div>
+        <button class="sil-submit" onclick="return false;">Get Started →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ EMPLOYERS & PARTNERS ═══════════════════════════════════════════════ -->
+<section id="employers">
+
+  <!-- for employers.jpg: hangar cohort with vintage biplane — the scalable pipeline made visible -->
+  <div class="emp-img-strip reveal-up">
+    <img
+      src="assets/images/for-employers.jpg"
+      alt="WIN × AvTech training cohort with vintage biplane — certified candidates ready to work"
+      loading="lazy"
+    />
+    <div class="emp-strip-caption">
+      <div class="emp-strip-eyebrow">Certified Pipeline</div>
+      <div class="emp-strip-hed">Real Candidates.<br>Real Aircraft.</div>
+    </div>
+  </div>
+
+  <div class="employers-inner">
+    <div class="employers-left reveal-left">
+      <div class="eyebrow">For Employers &amp; Partners</div>
+      <div class="section-rule" id="emp-rule"></div>
+      <h2 class="emp-hed">A Scalable Pipeline<br>of <em>Certified Talent.</em></h2>
+      <p class="emp-body">This partnership is building a scalable pipeline of certified aviation maintenance professionals with real-world military experience. These are not entry-level candidates — they are proven professionals who have already maintained some of the most complex aircraft in existence.</p>
+      <p class="emp-body">If you are interested in hiring, partnering, or supporting this initiative, we want to connect.</p>
+      <div class="emp-contact-row">
+        <div class="emp-contact-item">
+          <div class="emp-contact-icon">✉</div>
+          <a href="mailto:info@warriorsinneed.org" class="emp-contact-link">info@warriorsinneed.org</a>
+        </div>
+        <div class="emp-contact-item">
+          <div class="emp-contact-icon">☎</div>
+          <a href="tel:7479461775" class="emp-contact-link">747-946-1775</a>
+        </div>
+        <div class="emp-contact-item">
+          <div class="emp-contact-icon">⬡</div>
+          <a href="https://warriorsinneed.org#intake" class="emp-contact-link">Complete the employer intake form →</a>
+        </div>
+      </div>
+    </div>
+    <div class="emp-tiles reveal-right">
+      <div class="emp-tile">
+        <div class="emp-tile-icon">
+          <svg viewBox="0 0 28 28" fill="none"><path d="M14 3C8 3 3 8 3 14s5 11 11 11 11-5 11-11S20 3 14 3z" stroke="currentColor" stroke-width="1.3"/><path d="M14 9v5l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+        <div class="emp-tile-title">Proven Experience</div>
+        <p class="emp-tile-body">Candidates have thousands of hours of hands-on military aviation maintenance experience before they ever reach you.</p>
+      </div>
+      <div class="emp-tile">
+        <div class="emp-tile-icon">
+          <svg viewBox="0 0 28 28" fill="none"><rect x="4" y="6" width="20" height="16" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M9 13h10M9 17h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="emp-tile-title">FAA Certified</div>
+        <p class="emp-tile-body">Every candidate completing this pathway holds a full FAA Airframe & Powerplant certification — verified, ready to work.</p>
+      </div>
+      <div class="emp-tile">
+        <div class="emp-tile-icon">
+          <svg viewBox="0 0 28 28" fill="none"><circle cx="10" cy="10" r="5" stroke="currentColor" stroke-width="1.3"/><circle cx="20" cy="18" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M14 12l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="emp-tile-title">Scalable Pipeline</div>
+        <p class="emp-tile-body">200,000 service members transition annually. This partnership converts that talent pool into job-ready aviation professionals.</p>
+      </div>
+      <div class="emp-tile">
+        <div class="emp-tile-icon">
+          <svg viewBox="0 0 28 28" fill="none"><path d="M14 4l2.5 7.5H24l-6 4.5 2.5 7.5L14 19l-6.5 4.5 2.5-7.5L4 11.5h7.5L14 4z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="emp-tile-title">Mission-Aligned</div>
+        <p class="emp-tile-body">Partnering with WIN supports veteran workforce integration while addressing the aviation industry's critical mechanic shortage.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ═════════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-brand">WIN <em>×</em> AvTech</div>
+  <div class="footer-note">© 2025 Warriors In Need — warriorsinneed.org</div>
+  <div class="footer-links">
+    <a href="index.html">WIN Homepage</a>
+    <a href="https://www.avtech-exams.com" target="_blank" rel="noopener">AvTech Exams</a>
+    <a href="index.html#intake">Start Intake</a>
+    <a href="mailto:info@warriorsinneed.org">Contact</a>
+  </div>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+const FILM = 'expo.out';
+
+/* ── Cursor ──────────────────────────────────────── */
+const cur = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top  = e.clientY + 'px';
+});
+document.querySelectorAll('a,button').forEach(el => {
+  el.addEventListener('mouseenter', () => cur.classList.add('big'));
+  el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+});
+
+/* ── Nav scroll state ────────────────────────────── */
+const sitenav = document.getElementById('sitenav');
+window.addEventListener('scroll', () => {
+  sitenav.classList.toggle('scrolled', window.scrollY > 40);
+}, { passive: true });
+
+/* ── Hero parallax ───────────────────────────────── */
+gsap.to('#hero-img', {
+  y: '22%', ease: 'none',
+  scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 1.2 }
+});
+
+/* ── Hero entrance ───────────────────────────────── */
+const heroTL = gsap.timeline({ delay: .15 });
+heroTL.to('#lbt', { height: 0, duration: 1.1, ease: FILM }, 0);
+heroTL.to('#lbb', { height: 0, duration: 1.1, ease: FILM }, 0);
+heroTL.to('#hero-eyebrow-span', { y: '0%', duration: 1.0, ease: FILM }, .3);
+heroTL.to('#hero-badge', { opacity: 1, duration: .8, ease: 'power2.out' }, .55);
+['#hl1','#hl2','#hl3'].forEach((id, i) => {
+  heroTL.to(id, { y: '0%', duration: 1.3, ease: FILM }, .5 + i * .12);
+});
+heroTL.to('#hero-sub span', { y: '0%', duration: 1.1, ease: FILM }, .95);
+heroTL.to('#hero-ctas', { opacity: 1, y: 0, duration: .9, ease: 'power2.out' }, 1.15);
+
+/* ── Section rules animate width ────────────────── */
+['#ov-rule','#prob-rule','#why-rule','#emp-rule'].forEach(id => {
+  gsap.to(id, {
+    width: '60px', duration: 1.4, ease: FILM,
+    scrollTrigger: { trigger: id, start: 'top 80%', toggleActions: 'play none none none' }
+  });
+});
+
+/* ── Universal reveal classes ────────────────────── */
+document.querySelectorAll('.reveal-up').forEach((el, i) => {
+  gsap.to(el, {
+    opacity: 1, y: 0, duration: 1.4, ease: FILM,
+    scrollTrigger: { trigger: el, start: 'top 82%', toggleActions: 'play none none none' },
+    delay: (i % 4) * .06
+  });
+});
+document.querySelectorAll('.reveal-left').forEach(el => {
+  gsap.to(el, {
+    opacity: 1, x: 0, duration: 1.5, ease: FILM,
+    scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
+  });
+});
+document.querySelectorAll('.reveal-right').forEach(el => {
+  gsap.to(el, {
+    opacity: 1, x: 0, duration: 1.5, ease: FILM,
+    scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
+  });
+});
+
+ScrollTrigger.refresh();
+</script>
+</body>
+</html>
