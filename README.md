@@ -32,9 +32,14 @@ AvTech page images live in `assets/images/`:
 
 | Setting | Value |
 |---------|-------|
+| Production branch | `main` |
 | Build command | `npm run build` |
 | Build output directory | `dist` |
 
 The build copies `index.html`, `win-avtech.html`, and `assets/` into `dist/` — no bundler required.
+
+**Important:** If the build log shows `HEAD is now at ab299a1`, you are redeploying an old commit (before `package.json` existed). Do **not** use **Retry** on that deployment. Create a **new deployment from `main`** (latest commit) or promote the newest successful build.
+
+Required commit on `main`: **`5d194f1`** or later (includes `package.json` and `scripts/build.mjs`).
 
 For other hosts, serve the repo root (or `dist/` after running `npm run build`) so `index.html` is the default document.
