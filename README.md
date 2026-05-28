@@ -28,6 +28,13 @@ AvTech page images live in `assets/images/`:
 - `partnership-matters.jpg`
 - `for-employers.jpg`
 
-## Deploy
+## Deploy (Cloudflare Pages)
 
-Serve the repo root as the web root so `index.html` is the default document.
+| Setting | Value |
+|---------|-------|
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+
+The build copies `index.html`, `win-avtech.html`, and `assets/` into `dist/` — no bundler required.
+
+For other hosts, serve the repo root (or `dist/` after running `npm run build`) so `index.html` is the default document.
