@@ -32,13 +32,15 @@ In Brevo, ensure each list does **not** require double opt-in for API-added cont
 
 ## 3. Newsletter list (`_newsletter`)
 
-Create a Brevo contact list named **\_newsletter** (or use your existing one), note its numeric **List ID**, then set `BREVO_LIST_NEWSLETTER` in Cloudflare.
+The footer form posts to `/api/newsletter`. If `BREVO_LIST_NEWSLETTER` is empty, the API **automatically finds** a Brevo list named `_newsletter` (or containing “newsletter”) or **creates** `_newsletter` on first subscribe.
+
+To pin a specific list ID (optional, slightly faster):
 
 ```bash
-BREVO_API_KEY=your_key node scripts/list-brevo-lists.mjs
+BREVO_API_KEY=your_key node scripts/ensure-brevo-newsletter-list.mjs
 ```
 
-The footer contact form posts to `/api/newsletter`.
+Then set `BREVO_LIST_NEWSLETTER` in `wrangler.toml` and Cloudflare Pages → Environment variables.
 
 ## 4. Cloudflare Pages environment variables
 

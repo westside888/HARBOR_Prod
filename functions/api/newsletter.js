@@ -1,4 +1,5 @@
 import { upsertBrevoContact } from '../lib/brevo-contact.js';
+import { resolveNewsletterListId } from '../lib/brevo-lists.js';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -28,7 +29,6 @@ export async function onRequestPost(context) {
   try {
     const { request, env } = context;
     const apiKey = env.BREVO_API_KEY;
-    const listId = parseInt(env.BREVO_LIST_NEWSLETTER || '0', 10);
 
     if (!apiKey) {
       return json(headers, 500, {
@@ -36,12 +36,15 @@ export async function onRequestPost(context) {
         message: 'Server configuration error. Set BREVO_API_KEY in Cloudflare Pages.',
       });
     }
-    if (!listId) {
+
+    const listResult = await resolveNewsletterListId(apiKey, env);
+    if (!listResult.ok) {
       return json(headers, 500, {
         ok: false,
-        message: 'Newsletter list not configured. Set BREVO_LIST_NEWSLETTER in Cloudflare.',
+        message: listResult.message || 'Newsletter list is not available.',
       });
     }
+    const listId = listResult.id;
 
     let body;
     try {
