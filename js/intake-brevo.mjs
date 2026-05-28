@@ -19,19 +19,27 @@ function getControlKey(control) {
   return control.dataset?.field || control.name || '';
 }
 
+function checkboxLabel(input) {
+  const label = input.closest('label');
+  if (!label) return input.value || '';
+  const clone = label.cloneNode(true);
+  clone.querySelectorAll('input').forEach((n) => n.remove());
+  return clone.textContent.replace(/\s+/g, ' ').trim() || input.value || '';
+}
+
 function collectPanelFields(panel) {
   const fields = {};
   panel.querySelectorAll('.intake-field').forEach((wrap) => {
     const labelEl = wrap.querySelector(':scope > label');
-    const checkboxes = wrap.querySelectorAll('.intake-checkboxes input[type="checkbox"]');
+    const checkboxes = wrap.querySelectorAll(
+      '.intake-checkboxes input[type="checkbox"], .intake-check input[type="checkbox"]'
+    );
 
     if (checkboxes.length) {
       const key = getControlKey(checkboxes[0]);
       const label = fieldLabelForKey(key, labelEl);
       if (!label) return;
-      const checked = [...checkboxes]
-        .filter((cb) => cb.checked)
-        .map((cb) => cb.parentElement?.textContent?.trim() || cb.value);
+      const checked = [...checkboxes].filter((cb) => cb.checked).map((cb) => checkboxLabel(cb));
       if (checked.length) fields[label] = checked.join(', ');
       return;
     }
@@ -62,7 +70,9 @@ function validateRequired(panel) {
   panel.querySelectorAll('.intake-field').forEach((wrap) => {
     if (!wrap.querySelector('.req')) return;
     const labelEl = wrap.querySelector(':scope > label');
-    const checkboxes = wrap.querySelectorAll('.intake-checkboxes input[type="checkbox"]');
+    const checkboxes = wrap.querySelectorAll(
+      '.intake-checkboxes input[type="checkbox"], .intake-check input[type="checkbox"]'
+    );
 
     if (checkboxes.length) {
       const key = getControlKey(checkboxes[0]);
