@@ -43,11 +43,89 @@ async function fetchLists(apiKey) {
   return { ok: true, status: res.status, data, lists: data.lists || [] };
 }
 
+async function fetchFolders(apiKey) {
+  const res = await fetch('https://api.brevo.com/v3/contacts/folders?limit=50', {
+    headers: brevoHeaders(apiKey),
+  });
+  const text = await res.text();
+  let data = {};
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch {
+    data = {};
+  }
+  if (!res.ok) {
+    return { ok: false, status: res.status, data, folders: [] };
+  }
+  const folders = data.folders || data.items || [];
+  return { ok: true, folders: Array.isArray(folders) ? folders : [] };
+}
+
+async function folderIdFromKnownList(apiKey) {
+  for (const listId of [26, 27, 28]) {
+    const res = await fetch(`https://api.brevo.com/v3/contacts/lists/${listId}`, {
+      headers: brevoHeaders(apiKey),
+    });
+    if (!res.ok) continue;
+    const text = await res.text();
+    try {
+      const data = text ? JSON.parse(text) : {};
+      const folderId = data.folderId ?? data.folder_id;
+      if (folderId) return folderId;
+    } catch {
+      /* try next */
+    }
+  }
+  return null;
+}
+
+async function resolveFolderId(apiKey) {
+  const fromKnown = await folderIdFromKnownList(apiKey);
+  if (fromKnown) return fromKnown;
+
+  const fromLists = await fetchLists(apiKey);
+  if (fromLists.ok) {
+    for (const list of fromLists.lists) {
+      const folderId = list.folderId ?? list.folder_id;
+      if (folderId) return folderId;
+    }
+  }
+
+  const foldersResult = await fetchFolders(apiKey);
+  if (foldersResult.ok && foldersResult.folders.length) {
+    return foldersResult.folders[0].id;
+  }
+
+  const res = await fetch('https://api.brevo.com/v3/contacts/folders', {
+    method: 'POST',
+    headers: brevoHeaders(apiKey),
+    body: JSON.stringify({ name: 'WIN' }),
+  });
+  const text = await res.text();
+  let data = {};
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch {
+    data = {};
+  }
+  if (res.ok && data.id) return data.id;
+  return null;
+}
+
 async function createNewsletterList(apiKey) {
+  const folderId = await resolveFolderId(apiKey);
+  if (!folderId) {
+    return {
+      ok: false,
+      status: 400,
+      data: { message: 'Unable to resolve a Brevo folder for the newsletter list.' },
+    };
+  }
+
   const res = await fetch('https://api.brevo.com/v3/contacts/lists', {
     method: 'POST',
     headers: brevoHeaders(apiKey),
-    body: JSON.stringify({ name: '_newsletter' }),
+    body: JSON.stringify({ name: '_newsletter', folderId }),
   });
   const text = await res.text();
   let data = {};

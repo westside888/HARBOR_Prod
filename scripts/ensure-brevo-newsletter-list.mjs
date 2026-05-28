@@ -33,10 +33,30 @@ async function main() {
     return;
   }
 
+  let folderId = (data.lists || []).map((l) => l.folderId).find(Boolean);
+  if (!folderId) {
+    const foldersRes = await fetch('https://api.brevo.com/v3/contacts/folders?limit=10', { headers });
+    const foldersData = await foldersRes.json().catch(() => ({}));
+    folderId = (foldersData.folders || [])[0]?.id;
+    if (!folderId) {
+      const mkFolder = await fetch('https://api.brevo.com/v3/contacts/folders', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ name: 'WIN' }),
+      });
+      const mkData = await mkFolder.json().catch(() => ({}));
+      folderId = mkData.id;
+    }
+  }
+  if (!folderId) {
+    console.error('Could not resolve a Brevo folderId');
+    process.exit(1);
+  }
+
   const create = await fetch('https://api.brevo.com/v3/contacts/lists', {
     method: 'POST',
     headers,
-    body: JSON.stringify({ name: '_newsletter' }),
+    body: JSON.stringify({ name: '_newsletter', folderId }),
   });
   const created = await create.json().catch(() => ({}));
   if (!create.ok) {
