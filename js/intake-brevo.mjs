@@ -131,7 +131,13 @@ async function submitIntakeForm(e) {
         website: honeypot?.value || '',
       }),
     });
-    const data = await res.json().catch(() => ({}));
+    const text = await res.text();
+    let data = {};
+    try {
+      data = text ? JSON.parse(text) : {};
+    } catch {
+      data = {};
+    }
 
     if (res.ok && data.ok) {
       showIntakeMessage(
@@ -143,7 +149,13 @@ async function submitIntakeForm(e) {
       }
       form.reset();
     } else {
-      showIntakeMessage(data.message || 'Submission failed. Please try again.', true);
+      showIntakeMessage(
+        data.message ||
+          (res.status >= 500
+            ? 'Submission is temporarily unavailable. Please try again or email info@warriorsinneed.org.'
+            : 'Submission failed. Please try again.'),
+        true
+      );
     }
   } catch {
     showIntakeMessage('Network error. Please check your connection and try again.', true);

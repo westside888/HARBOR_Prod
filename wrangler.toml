@@ -7,4 +7,6 @@ pages_build_output_dir = "dist"
 BREVO_LIST_VETERAN = "26"
 BREVO_LIST_EMPLOYER = "27"
 BREVO_LIST_DONOR = "28"
+# Brevo list ID for "_newsletter" — set in Cloudflare dashboard after creating the list
+BREVO_LIST_NEWSLETTER = ""
 ALLOWED_ORIGINS = "https://warriorsinneed.org,https://www.warriorsinneed.org"

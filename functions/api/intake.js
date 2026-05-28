@@ -1,5 +1,6 @@
-import { LABEL_TO_BREVO, LIST_IDS } from '../../lib/brevo-attributes.js';
-import { FIELD_KEY_TO_LABEL } from '../../lib/field-keys.js';
+import { LABEL_TO_BREVO, LIST_IDS } from '../lib/brevo-attributes.js';
+import { FIELD_KEY_TO_LABEL } from '../lib/field-keys.js';
+import { upsertBrevoContact } from '../lib/brevo-contact.js';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -71,7 +72,10 @@ export async function onRequestPost(context) {
     const apiKey = env.BREVO_API_KEY;
 
     if (!apiKey) {
-      return json(headers, 500, { ok: false, message: 'Server configuration error.' });
+      return json(headers, 500, {
+        ok: false,
+        message: 'Server configuration error. Set BREVO_API_KEY in Cloudflare Pages.',
+      });
     }
 
     let body;
@@ -112,34 +116,14 @@ export async function onRequestPost(context) {
     );
     if (phone) attributes.SMS = phone;
 
-    const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
-      method: 'POST',
-      headers: {
-        accept: 'application/json',
-        'content-type': 'application/json',
-        'api-key': apiKey,
-      },
-      body: JSON.stringify({
-        email,
-        listIds: [listId],
-        attributes,
-        updateEnabled: true,
-        emailBlacklisted: false,
-        smsBlacklisted: false,
-      }),
+    const result = await upsertBrevoContact({
+      apiKey,
+      email,
+      listIds: [listId],
+      attributes,
     });
 
-    const text = await brevoRes.text();
-    let data = {};
-    if (text) {
-      try {
-        data = JSON.parse(text);
-      } catch {
-        data = { raw: text };
-      }
-    }
-
-    if (brevoRes.ok || brevoRes.status === 204) {
+    if (result.ok) {
       return json(headers, 200, {
         ok: true,
         message: 'Thank you! Your intake has been submitted successfully.',
@@ -147,10 +131,10 @@ export async function onRequestPost(context) {
     }
 
     const msg =
-      data.message ||
-      data.code ||
+      result.data?.message ||
+      result.data?.code ||
       'Unable to submit intake. Please try again or contact info@warriorsinneed.org.';
-    console.error('Brevo error', brevoRes.status, data);
+    console.error('Brevo error', result.status, result.data);
     return json(headers, 502, { ok: false, message: msg });
   } catch (err) {
     console.error(err);

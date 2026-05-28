@@ -7,6 +7,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "brevo:attributes": "node scripts/create-brevo-attributes.mjs",
+    "brevo:lists": "node scripts/list-brevo-lists.mjs",
     "intake:annotate": "python3 scripts/annotate-intake-fields.py"
   }
 }
