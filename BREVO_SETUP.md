@@ -57,6 +57,13 @@ Set in Cloudflare as `BREVO_DOI_REDIRECT_URL` (optional; this is the default in 
 
 Deploy from **`main`** (commit must include `functions/api/intake.js` and `package.json`).
 
+Non-secret defaults are in `wrangler.toml` `[vars]`. Set secrets via dashboard or:
+
+```bash
+chmod +x scripts/set-cloudflare-secrets.sh
+./scripts/set-cloudflare-secrets.sh
+```
+
 ## 6. Test
 
 1. Submit veteran intake on staging/production.

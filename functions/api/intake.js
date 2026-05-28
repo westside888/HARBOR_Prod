@@ -1,4 +1,5 @@
 import { LABEL_TO_BREVO, LIST_IDS, DOI_REDIRECT_URL } from '../../lib/brevo-attributes.js';
+import { FIELD_KEY_TO_LABEL } from '../../lib/field-keys.js';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -26,10 +27,31 @@ function normalizePhone(value) {
   return digits.startsWith('+') ? digits : `+${digits}`;
 }
 
+function normalizeFields(raw) {
+  const out = {};
+  for (const [k, v] of Object.entries(raw || {})) {
+    if (!v || k.startsWith('_')) continue;
+    const lower = k.toLowerCase().trim();
+    const label = FIELD_KEY_TO_LABEL[lower] || lower;
+    out[label] = v;
+  }
+  return out;
+}
+
+function listIdForRole(role, env) {
+  const fromEnv = {
+    veteran: env.BREVO_LIST_VETERAN,
+    employer: env.BREVO_LIST_EMPLOYER,
+    donor: env.BREVO_LIST_DONOR,
+  }[role];
+  const id = parseInt(fromEnv || LIST_IDS[role], 10);
+  return Number.isFinite(id) ? id : null;
+}
+
 function buildBrevoAttributes(fields, role) {
   const attributes = { INTAKE_ROLE: role };
   for (const [label, value] of Object.entries(fields)) {
-    if (!value || label.startsWith('_')) continue;
+    if (!value) continue;
     const key = LABEL_TO_BREVO[label.toLowerCase().trim()];
     if (!key || key === 'EMAIL') continue;
     attributes[key] = String(value).slice(0, 500);
@@ -72,8 +94,9 @@ export async function onRequestPost(context) {
     }
 
     const role = body.role;
-    const fields = body.fields || {};
-    if (!role || !LIST_IDS[role]) {
+    const listId = listIdForRole(role, env);
+    const fields = normalizeFields(body.fields);
+    if (!role || !listId) {
       return json(headers, 400, { ok: false, message: 'Invalid intake type.' });
     }
 
@@ -106,7 +129,7 @@ export async function onRequestPost(context) {
       },
       body: JSON.stringify({
         email,
-        includeListIds: [LIST_IDS[role]],
+        includeListIds: [listId],
         templateId,
         redirectionUrl: redirectUrl,
         attributes,

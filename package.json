@@ -2,8 +2,12 @@
   "name": "win-web-prod",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Warriors In Need static site",
   "scripts": {
-    "build": "node scripts/build.mjs"
+    "build": "node scripts/build.mjs",
+    "brevo:attributes": "node scripts/create-brevo-attributes.mjs",
+    "brevo:templates": "node scripts/list-brevo-doi-templates.mjs",
+    "intake:annotate": "python3 scripts/annotate-intake-fields.py"
   }
 }
