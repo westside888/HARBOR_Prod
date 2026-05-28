@@ -13,5 +13,6 @@ for (const file of ['index.html', 'win-avtech.html']) {
 }
 
 cpSync(join(root, 'assets'), join(out, 'assets'), { recursive: true });
+cpSync(join(root, 'js'), join(out, 'js'), { recursive: true });
 
 console.log('Static site built → dist/');

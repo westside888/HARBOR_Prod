@@ -43,3 +43,7 @@ The build copies `index.html`, `win-avtech.html`, and `assets/` into `dist/` —
 Required commit on `main`: **`5d194f1`** or later (includes `package.json` and `scripts/build.mjs`).
 
 For other hosts, serve the repo root (or `dist/` after running `npm run build`) so `index.html` is the default document.
+
+## Brevo intake CRM
+
+The intake form posts to `/api/intake` (Cloudflare Pages Function) and triggers Brevo double opt-in. See [BREVO_SETUP.md](BREVO_SETUP.md) for API keys, attribute creation, and env vars.
