@@ -135,12 +135,11 @@ async function submitIntakeForm(e) {
 
     if (res.ok && data.ok) {
       showIntakeMessage(
-        data.message ||
-          'Thank you! Check your email and click the confirmation link to complete your intake.',
+        data.message || 'Thank you! Your intake has been submitted successfully.',
         false
       );
-      if (typeof window.openIntakeConfirmModal === 'function') {
-        window.openIntakeConfirmModal();
+      if (typeof window.openIntakeSuccessModal === 'function') {
+        window.openIntakeSuccessModal();
       }
       form.reset();
     } else {

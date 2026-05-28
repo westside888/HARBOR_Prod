@@ -2,10 +2,8 @@ name = "win-web-prod"
 compatibility_date = "2026-05-28"
 pages_build_output_dir = "dist"
 
-# Non-secret defaults (override in Cloudflare Pages → Settings → Environment variables).
-# Set BREVO_API_KEY and BREVO_DOI_TEMPLATE_ID as encrypted secrets in the dashboard.
+# Set BREVO_API_KEY as an encrypted secret in the Cloudflare Pages dashboard.
 [vars]
-BREVO_DOI_REDIRECT_URL = "https://warriorsinneed.org/#intake?confirmed=1"
 BREVO_LIST_VETERAN = "26"
 BREVO_LIST_EMPLOYER = "27"
 BREVO_LIST_DONOR = "28"

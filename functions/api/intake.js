@@ -1,4 +1,4 @@
-import { LABEL_TO_BREVO, LIST_IDS, DOI_REDIRECT_URL } from '../../lib/brevo-attributes.js';
+import { LABEL_TO_BREVO, LIST_IDS } from '../../lib/brevo-attributes.js';
 import { FIELD_KEY_TO_LABEL } from '../../lib/field-keys.js';
 
 const CORS_HEADERS = {
@@ -69,17 +69,9 @@ export async function onRequestPost(context) {
   try {
     const { request, env } = context;
     const apiKey = env.BREVO_API_KEY;
-    const templateId = parseInt(env.BREVO_DOI_TEMPLATE_ID || '0', 10);
-    const redirectUrl = env.BREVO_DOI_REDIRECT_URL || DOI_REDIRECT_URL;
 
     if (!apiKey) {
       return json(headers, 500, { ok: false, message: 'Server configuration error.' });
-    }
-    if (!templateId) {
-      return json(headers, 500, {
-        ok: false,
-        message: 'Double opt-in template not configured. Set BREVO_DOI_TEMPLATE_ID in Cloudflare.',
-      });
     }
 
     let body;
@@ -120,7 +112,7 @@ export async function onRequestPost(context) {
     );
     if (phone) attributes.SMS = phone;
 
-    const brevoRes = await fetch('https://api.brevo.com/v3/contacts/doubleOptinConfirmation', {
+    const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
       headers: {
         accept: 'application/json',
@@ -129,11 +121,11 @@ export async function onRequestPost(context) {
       },
       body: JSON.stringify({
         email,
-        includeListIds: [listId],
-        templateId,
-        redirectionUrl: redirectUrl,
+        listIds: [listId],
         attributes,
         updateEnabled: true,
+        emailBlacklisted: false,
+        smsBlacklisted: false,
       }),
     });
 
@@ -150,7 +142,7 @@ export async function onRequestPost(context) {
     if (brevoRes.ok || brevoRes.status === 204) {
       return json(headers, 200, {
         ok: true,
-        message: 'Please check your email to confirm your submission.',
+        message: 'Thank you! Your intake has been submitted successfully.',
       });
     }
 

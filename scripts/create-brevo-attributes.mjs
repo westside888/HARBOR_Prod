@@ -48,4 +48,4 @@ for (const name of BREVO_CUSTOM_ATTRIBUTES) {
   await new Promise((r) => setTimeout(r, 120));
 }
 
-console.log('\nDone. DOI redirect URL: https://warriorsinneed.org/#intake?confirmed=1');
+console.log('\nDone. Intake contacts are added via POST /v3/contacts (no double opt-in).');
