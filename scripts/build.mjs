@@ -8,9 +8,12 @@ const out = join(root, 'dist');
 rmSync(out, { recursive: true, force: true });
 mkdirSync(out, { recursive: true });
 
-for (const file of ['index.html', 'win-avtech.html']) {
-  cpSync(join(root, file), join(out, file));
-}
+cpSync(join(root, 'index.html'), join(out, 'index.html'));
+cpSync(join(root, 'win-avtech.html'), join(out, 'win-avtech.html'));
+
+const winStoriesDir = join(out, 'win-stories');
+mkdirSync(winStoriesDir, { recursive: true });
+cpSync(join(root, 'win-avtech.html'), join(winStoriesDir, 'win-avtech.html'));
 
 cpSync(join(root, 'assets'), join(out, 'assets'), { recursive: true });
 cpSync(join(root, 'js'), join(out, 'js'), { recursive: true });
