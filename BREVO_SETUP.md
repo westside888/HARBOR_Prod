@@ -5,6 +5,8 @@
 - **Rotate your API key** if it was shared in chat or email.
 - Store `BREVO_API_KEY` only in **Cloudflare Pages** environment variables (encrypted). Never commit it to git.
 
+**Important:** If Brevo → Security → **Authorised IPs** is enabled, Cloudflare Pages requests will be blocked (502 errors). Either disable IP restriction for this API key or allow Cloudflare egress (recommended: disable IP lock for the website integration key).
+
 ## 1. Create custom contact attributes
 
 From your machine (after allowing your IP in Brevo → Security → Authorised IPs):
