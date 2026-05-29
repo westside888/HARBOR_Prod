@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>WIN × AvTech — From Military Experience to FAA Certification</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -951,6 +951,55 @@ footer {
   .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
   footer { padding: 1rem 1.1rem; }
 }
+
+/* ── MOBILE UX PASS (2026-05) ───────────────────────────────── */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+a, button, .btn-primary, .btn-ghost, .sil-submit {
+  -webkit-tap-highlight-color: rgba(173, 194, 42, 0.18);
+}
+@supports (padding: max(0px)) {
+  nav {
+    padding-left: max(1.1rem, env(safe-area-inset-left));
+    padding-right: max(1.1rem, env(safe-area-inset-right));
+  }
+  footer {
+    padding-left: max(1.1rem, env(safe-area-inset-left));
+    padding-right: max(1.1rem, env(safe-area-inset-right));
+  }
+}
+@media (max-width: 580px) {
+  .nav-cta {
+    display: inline-flex !important;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    white-space: nowrap;
+  }
+  .nav-brand {
+    flex-shrink: 1;
+    min-width: 0;
+  }
+  .nav-avtech {
+    font-size: 1.1rem;
+  }
+  .sil-field input,
+  .sil-field select,
+  .sil-field textarea {
+    font-size: 16px;
+    min-height: 48px;
+  }
+  .sil-submit,
+  .btn-primary,
+  .btn-ghost {
+    min-height: 48px;
+  }
+}
+
 </style>
 </head>
 <body>
