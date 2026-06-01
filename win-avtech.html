@@ -115,6 +115,27 @@ nav.scrolled { background: rgba(8,8,7,.92); backdrop-filter: blur(14px); }
 .nav-cta:hover { border-color: var(--olive-hi); }
 .nav-cta:hover::before { transform: scaleX(1); }
 
+.nav-logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.nav-logo {
+  height: 38px;
+  width: auto;
+  display: block;
+}
+a.donate-cta-bar {
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color .3s, background .3s;
+}
+a.donate-cta-bar:hover {
+  border-color: rgba(173,194,42,.45);
+  background: rgba(173,194,42,.06);
+}
+
 /* ── HERO ───────────────────────────────────────────────────── */
 #hero {
   position: relative; height: 100vh; min-height: 640px;
@@ -1009,12 +1030,10 @@ a, button, .btn-primary, .btn-ghost, .sil-submit {
 
 <!-- NAV -->
 <nav id="sitenav">
-  <a class="nav-brand" href="https://warriorsinneed.org/">
-    <span class="nav-win">WIN</span>
-    <span class="nav-x">×</span>
-    <span class="nav-avtech">AvTech</span>
+  <a class="nav-logo-link" href="https://warriorsinneed.org/" aria-label="Warriors In Need home">
+    <img src="/assets/images/win-logo-nav.png" alt="Warriors In Need" class="nav-logo" width="173" height="76" />
   </a>
-  <a href="https://warriorsinneed.org/#intake" class="nav-cta">Start Your Intake</a>
+  <a href="https://warriorsinneed.org/#:~:text=a%20veteran%20or-,transitioning,-service%20member." class="nav-cta">Start Your Intake</a>
 </nav>
 
 <!-- ══ HERO ═══════════════════════════════════════════════════════════════ -->
@@ -1044,7 +1063,7 @@ a, button, .btn-primary, .btn-ghost, .sil-submit {
       <span>A direct, end-to-end pathway for service members and veterans to complete A&P certification and transition into civilian aviation careers.</span>
     </div>
     <div class="hero-ctas" id="hero-ctas">
-      <a href="#start" class="btn-primary">Start Your Intake ↗</a>
+      <a href="https://warriorsinneed.org/#:~:text=a%20veteran%20or-,transitioning,-service%20member." class="btn-primary">Start Your Intake ↗</a>
       <a href="#employers" class="btn-ghost">For Employers &amp; Partners →</a>
     </div>
   </div>
@@ -1271,45 +1290,6 @@ a, button, .btn-primary, .btn-ghost, .sil-submit {
   </div>
 </section>
 
-<!-- ══ START YOUR PATH ════════════════════════════════════════════════════ -->
-<section id="start">
-  <div class="start-inner">
-    <div class="reveal-up">
-      <div class="eyebrow">Start Your Path</div>
-      <h2 class="start-hed">Your Certification<br>Starts <em>Here.</em></h2>
-      <p class="start-body">Service members and veterans: start your path to FAA A&P certification today. Our team will review your background, determine your eligibility, and guide you through every step toward certification and employment.</p>
-      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-        <a href="https://warriorsinneed.org#intake" class="btn-primary">Start Your Intake ↗</a>
-      </div>
-      <div class="start-note">No commitment required. Takes less than 2 minutes to get started.</div>
-    </div>
-
-    <div class="start-intake-strip reveal-up">
-      <div class="sil-eyebrow">Quick Start — Tell Us About Yourself</div>
-      <div class="sil-fields">
-        <div class="sil-field">
-          <label>Full Name</label>
-          <input type="text" placeholder="First & Last Name"/>
-        </div>
-        <div class="sil-field">
-          <label>Email Address</label>
-          <input type="email" placeholder="name@example.com"/>
-        </div>
-        <div class="sil-field">
-          <label>Branch of Service</label>
-          <select>
-            <option value="">Select Branch</option>
-            <option>Air Force</option><option>Army</option><option>Coast Guard</option>
-            <option>Marine Corps</option><option>Navy</option><option>Space Force</option>
-            <option>National Guard</option><option>Reserve</option>
-          </select>
-        </div>
-        <button class="sil-submit" onclick="return false;">Get Started →</button>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ══ EMPLOYERS & PARTNERS ═══════════════════════════════════════════════ -->
 <section id="employers">
 
@@ -1344,7 +1324,7 @@ a, button, .btn-primary, .btn-ghost, .sil-submit {
         </div>
         <div class="emp-contact-item">
           <div class="emp-contact-icon">⬡</div>
-          <a href="https://warriorsinneed.org#intake" class="emp-contact-link">Complete the employer intake form →</a>
+          <a href="https://warriorsinneed.org/#:~:text=a%20veteran%20or-,transitioning,-service%20member." class="emp-contact-link">Complete the employer intake form →</a>
         </div>
       </div>
     </div>
@@ -1388,7 +1368,7 @@ a, button, .btn-primary, .btn-ghost, .sil-submit {
   <div class="footer-links">
     <a href="https://warriorsinneed.org/">WIN Homepage</a>
     <a href="https://www.avtech-exams.com" target="_blank" rel="noopener">AvTech Exams</a>
-    <a href="https://warriorsinneed.org/#intake">Start Intake</a>
+    <a href="https://warriorsinneed.org/#:~:text=a%20veteran%20or-,transitioning,-service%20member.">Start Intake</a>
     <a href="mailto:info@warriorsinneed.org">Contact</a>
   </div>
 </footer>
