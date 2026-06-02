@@ -6,7 +6,7 @@ const STANDARD_ATTRS = new Set([
   'SMS',
   'CITY',
   'STATE',
-  'ZIP',
+  'ZIP_CODE',
   'COUNTRY',
   'ADDRESS',
 ]);

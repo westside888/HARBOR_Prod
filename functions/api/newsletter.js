@@ -65,7 +65,7 @@ export async function onRequestPost(context) {
     const firstName = String(body.firstName || body.first_name || '').trim();
     const lastName = String(body.lastName || body.last_name || '').trim();
 
-    const attributes = { INTAKE_ROLE: 'newsletter', REFERRAL_SOURCE: 'website newsletter' };
+    const attributes = { INTAKE_ROLE: 'newsletter', METHOD_OF_DISCOVERY: 'website newsletter' };
     if (firstName) attributes.FIRSTNAME = firstName;
     if (lastName) attributes.LASTNAME = lastName;
 
