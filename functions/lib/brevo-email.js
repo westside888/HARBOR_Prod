@@ -2,6 +2,18 @@
  * Send transactional email via Brevo SMTP API.
  * Failures are logged but do not block the intake response.
  */
+export const WIN_EMAIL_BRAND = {
+  olive: '#6e7d14',
+  oliveMid: '#8a9c1a',
+  oliveHi: '#adc22a',
+  black: '#0d0d0a',
+  dark: '#1a1a10',
+  text: '#f5f5f0',
+  textMuted: '#b8b8a8',
+  logoUrl: 'https://warriorsinneed.org/assets/images/win-logo-email.png',
+  siteUrl: 'https://warriorsinneed.org',
+};
+
 export async function sendBrevoEmail({ apiKey, senderEmail, to, subject, htmlContent, replyTo }) {
   if (!apiKey || !senderEmail || !to?.length || !subject || !htmlContent) {
     return { ok: false, skipped: true, reason: 'missing_params' };
@@ -55,40 +67,103 @@ function escapeHtml(value) {
     .replace(/"/g, '&quot;');
 }
 
-export function buildSubmitterConfirmationEmail({ firstName, role }) {
+/** Shared WIN-branded HTML email wrapper */
+export function buildBrandedEmailHtml({ title, bodyHtml, logoUrl = WIN_EMAIL_BRAND.logoUrl }) {
+  const { olive, oliveHi, dark, black, text, textMuted, siteUrl } = WIN_EMAIL_BRAND;
+  const safeTitle = escapeHtml(title);
+  const logo = escapeHtml(logoUrl);
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>${safeTitle}</title>
+</head>
+<body style="margin:0;padding:0;background-color:${black};font-family:'Segoe UI',Arial,Helvetica,sans-serif;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:${black};padding:24px 12px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="max-width:600px;width:100%;background-color:${dark};border:1px solid ${olive};border-radius:4px;overflow:hidden;">
+          <tr>
+            <td style="background:linear-gradient(135deg, ${olive} 0%, ${oliveHi} 100%);padding:28px 24px;text-align:center;">
+              <a href="${siteUrl}" style="text-decoration:none;">
+                <img src="${logo}" alt="Warriors In Need" width="280" style="display:block;margin:0 auto;max-width:280px;width:100%;height:auto;border:0;" />
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:32px 28px 24px;color:${text};font-size:16px;line-height:1.65;">
+              <h1 style="margin:0 0 20px;font-family:'Segoe UI',Arial,sans-serif;font-size:22px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:${oliveHi};">${safeTitle}</h1>
+              ${bodyHtml}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px 28px 28px;border-top:1px solid ${olive};color:${textMuted};font-size:13px;line-height:1.5;text-align:center;">
+              <p style="margin:0 0 8px;"><strong style="color:${oliveHi};">Warriors In Need</strong></p>
+              <p style="margin:0;"><a href="${siteUrl}" style="color:${oliveHi};text-decoration:none;">warriorsinneed.org</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
+export function buildSubmitterConfirmationEmail({ firstName, role, logoUrl }) {
   const name = escapeHtml(firstName || 'there');
   const roleLabel = ROLE_LABELS[role] || 'Intake';
+  const bodyHtml = `
+  <p style="margin:0 0 16px;">Hi ${name},</p>
+  <p style="margin:0 0 16px;">Thank you for submitting your <strong style="color:${WIN_EMAIL_BRAND.oliveHi};">${roleLabel}</strong> intake form to Warriors In Need.</p>
+  <p style="margin:0 0 16px;">We have received your information and a member of our team will follow up as soon as possible.</p>
+  <p style="margin:0;">In solidarity,<br /><strong>Warriors In Need</strong></p>`;
+
   return {
     subject: 'Thank you — Warriors In Need received your intake',
-    htmlContent: `<!DOCTYPE html>
-<html><body style="font-family:Arial,sans-serif;line-height:1.5;color:#1a1a10;">
-  <p>Hi ${name},</p>
-  <p>Thank you for submitting your <strong>${roleLabel}</strong> intake form to Warriors In Need.</p>
-  <p>We have received your information and a member of our team will follow up as soon as possible.</p>
-  <p>In solidarity,<br><strong>Warriors In Need</strong><br>
-  <a href="https://warriorsinneed.org">warriorsinneed.org</a></p>
-</body></html>`,
+    htmlContent: buildBrandedEmailHtml({
+      title: 'Thank you for your submission',
+      bodyHtml,
+      logoUrl,
+    }),
   };
 }
 
-export function buildInternalNotificationEmail({ role, firstName, lastName, email, phone, fields }) {
+export function buildInternalNotificationEmail({
+  role,
+  firstName,
+  lastName,
+  email,
+  phone,
+  fields,
+  logoUrl,
+}) {
   const roleLabel = ROLE_LABELS[role] || role || 'Intake';
   const rows = Object.entries(fields || {})
     .filter(([, v]) => v)
     .map(
       ([label, value]) =>
-        `<tr><td style="padding:6px 12px 6px 0;vertical-align:top;font-weight:bold;">${escapeHtml(label)}</td><td style="padding:6px 0;">${escapeHtml(value)}</td></tr>`
+        `<tr>
+          <td style="padding:8px 16px 8px 0;vertical-align:top;font-weight:600;color:${WIN_EMAIL_BRAND.oliveHi};font-size:14px;white-space:nowrap;">${escapeHtml(label)}</td>
+          <td style="padding:8px 0;color:${WIN_EMAIL_BRAND.text};font-size:14px;">${escapeHtml(value)}</td>
+        </tr>`
     )
     .join('');
 
+  const bodyHtml = `
+  <p style="margin:0 0 16px;">A new <strong style="color:${WIN_EMAIL_BRAND.oliveHi};">${escapeHtml(roleLabel)}</strong> intake was submitted on warriorsinneed.org.</p>
+  <table role="presentation" style="width:100%;border-collapse:collapse;margin:0 0 20px;">${rows}</table>
+  <p style="margin:0;"><strong style="color:${WIN_EMAIL_BRAND.oliveHi};">Email:</strong> ${escapeHtml(email)}<br />
+  <strong style="color:${WIN_EMAIL_BRAND.oliveHi};">Phone:</strong> ${escapeHtml(phone || '—')}</p>`;
+
   return {
     subject: `New ${roleLabel} intake — ${firstName || ''} ${lastName || ''}`.trim(),
-    htmlContent: `<!DOCTYPE html>
-<html><body style="font-family:Arial,sans-serif;line-height:1.5;color:#1a1a10;">
-  <p>A new <strong>${escapeHtml(roleLabel)}</strong> intake was submitted on warriorsinneed.org.</p>
-  <table style="border-collapse:collapse;">${rows}</table>
-  <p style="margin-top:1.5em;"><strong>Email:</strong> ${escapeHtml(email)}<br>
-  <strong>Phone:</strong> ${escapeHtml(phone || '—')}</p>
-</body></html>`,
+    htmlContent: buildBrandedEmailHtml({
+      title: `New ${roleLabel} intake`,
+      bodyHtml,
+      logoUrl,
+    }),
   };
 }
