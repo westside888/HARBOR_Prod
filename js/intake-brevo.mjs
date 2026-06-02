@@ -150,12 +150,12 @@ async function submitIntakeForm(e) {
     }
 
     if (res.ok && data.ok) {
-      showIntakeMessage(
-        data.message || 'Thank you! Your intake has been submitted successfully.',
-        false
-      );
+      const thanksMsg =
+        data.message ||
+        'Thank you for your submission! Warriors In Need has received your intake and will be in touch soon.';
+      showIntakeMessage(thanksMsg, false);
       if (typeof window.openIntakeSuccessModal === 'function') {
-        window.openIntakeSuccessModal();
+        window.openIntakeSuccessModal(thanksMsg);
       }
       form.reset();
     } else {

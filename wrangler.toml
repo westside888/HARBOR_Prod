@@ -10,3 +10,5 @@ BREVO_LIST_DONOR = "28"
 # Optional: Brevo list ID for "_newsletter". If empty, /api/newsletter finds or creates that list via API.
 BREVO_LIST_NEWSLETTER = ""
 ALLOWED_ORIGINS = "https://warriorsinneed.org,https://www.warriorsinneed.org"
+BREVO_SENDER_EMAIL = "info@warriorsinneed.org"
+BREVO_NOTIFY_EMAIL = "info@warriorsinneed.org"

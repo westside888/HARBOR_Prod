@@ -1,6 +1,11 @@
 import { LABEL_TO_BREVO, LIST_IDS } from '../lib/brevo-attributes.js';
 import { FIELD_KEY_TO_LABEL } from '../lib/field-keys.js';
 import { upsertBrevoContact } from '../lib/brevo-contact.js';
+import {
+  buildInternalNotificationEmail,
+  buildSubmitterConfirmationEmail,
+  sendBrevoEmail,
+} from '../lib/brevo-email.js';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -124,9 +129,45 @@ export async function onRequestPost(context) {
     });
 
     if (result.ok) {
+      const senderEmail = env.BREVO_SENDER_EMAIL || 'info@warriorsinneed.org';
+      const notifyEmail = env.BREVO_NOTIFY_EMAIL || 'info@warriorsinneed.org';
+
+      const submitterMail = buildSubmitterConfirmationEmail({
+        firstName: firstName.trim(),
+        role,
+      });
+      const internalMail = buildInternalNotificationEmail({
+        role,
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email,
+        phone,
+        fields,
+      });
+
+      await Promise.all([
+        sendBrevoEmail({
+          apiKey,
+          senderEmail,
+          to: [email],
+          subject: submitterMail.subject,
+          htmlContent: submitterMail.htmlContent,
+          replyTo: notifyEmail,
+        }),
+        sendBrevoEmail({
+          apiKey,
+          senderEmail,
+          to: [notifyEmail],
+          subject: internalMail.subject,
+          htmlContent: internalMail.htmlContent,
+          replyTo: email,
+        }),
+      ]);
+
       return json(headers, 200, {
         ok: true,
-        message: 'Thank you! Your intake has been submitted successfully.',
+        message:
+          'Thank you for your submission! Warriors In Need has received your intake and will be in touch soon.',
       });
     }
 
