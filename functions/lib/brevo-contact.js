@@ -25,62 +25,88 @@ function splitAttributes(attributes) {
   return { standard, custom };
 }
 
-export async function upsertBrevoContact({ apiKey, email, listIds, attributes }) {
-  const payloads = [
-    attributes,
-    { ...splitAttributes(attributes).standard, INTAKE_ROLE: attributes?.INTAKE_ROLE },
-    {
-      FIRSTNAME: attributes?.FIRSTNAME,
-      LASTNAME: attributes?.LASTNAME,
-      INTAKE_ROLE: attributes?.INTAKE_ROLE,
+function cleanAttributes(attrs) {
+  const cleaned = {};
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v != null && String(v).trim() !== '') cleaned[k] = String(v).slice(0, 500);
+  }
+  return cleaned;
+}
+
+async function postContact({ apiKey, email, listIds, attributes }) {
+  const res = await fetch('https://api.brevo.com/v3/contacts', {
+    method: 'POST',
+    headers: {
+      accept: 'application/json',
+      'content-type': 'application/json',
+      'api-key': apiKey,
     },
-    {},
-  ];
+    body: JSON.stringify({
+      email,
+      listIds,
+      attributes,
+      updateEnabled: true,
+      emailBlacklisted: false,
+      smsBlacklisted: false,
+    }),
+  });
 
+  const text = await res.text();
+  let data = {};
+  if (text) {
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = { raw: text };
+    }
+  }
+  return { status: res.status, ok: res.ok || res.status === 204, data };
+}
+
+// Pull attribute names that Brevo names in an error message so we can drop only
+// the offending field(s) and retry — never silently discarding all custom data.
+function offendingAttributes(message, candidateKeys) {
+  const msg = String(message || '').toUpperCase();
+  return candidateKeys.filter((k) => msg.includes(k.toUpperCase()));
+}
+
+export async function upsertBrevoContact({ apiKey, email, listIds, attributes }) {
+  let current = cleanAttributes(attributes);
   let last = { status: 0, data: {} };
-  for (const attrs of payloads) {
-    const cleaned = {};
-    for (const [k, v] of Object.entries(attrs)) {
-      if (v != null && String(v).trim() !== '') cleaned[k] = String(v).slice(0, 500);
+  const dropped = [];
+
+  // Retry loop: on a 400 that names specific attributes, remove just those and
+  // retry. Bounded by the number of attributes so it always terminates.
+  for (let attempt = 0; attempt <= Object.keys(current).length + 1; attempt += 1) {
+    const result = await postContact({ apiKey, email, listIds, attributes: current });
+    if (result.ok) {
+      return { ok: true, status: result.status, data: result.data, droppedAttributes: dropped };
     }
 
-    const res = await fetch('https://api.brevo.com/v3/contacts', {
-      method: 'POST',
-      headers: {
-        accept: 'application/json',
-        'content-type': 'application/json',
-        'api-key': apiKey,
-      },
-      body: JSON.stringify({
-        email,
-        listIds,
-        attributes: cleaned,
-        updateEnabled: true,
-        emailBlacklisted: false,
-        smsBlacklisted: false,
-      }),
-    });
+    last = { status: result.status, data: result.data };
+    if (result.status !== 400) break;
 
-    const text = await res.text();
-    let data = {};
-    if (text) {
-      try {
-        data = JSON.parse(text);
-      } catch {
-        data = { raw: text };
-      }
+    const message = result.data.message || result.data.code || '';
+    const bad = offendingAttributes(message, Object.keys(current));
+    if (bad.length === 0) break;
+
+    for (const key of bad) {
+      delete current[key];
+      dropped.push(key);
     }
+  }
 
-    if (res.ok || res.status === 204) {
-      return { ok: true, status: res.status, data };
-    }
-
-    last = { status: res.status, data };
-    const msg = String(data.message || data.code || '').toLowerCase();
-    const retryable =
-      res.status === 400 &&
-      (msg.includes('attribute') || msg.includes('invalid') || msg.includes('not found'));
-    if (!retryable) break;
+  // Last resort: persist the contact with standard fields only so the lead is
+  // never lost, even if an unexpected error blocked the full payload.
+  const fallback = { ...splitAttributes(attributes).standard, INTAKE_ROLE: attributes?.INTAKE_ROLE };
+  const result = await postContact({ apiKey, email, listIds, attributes: cleanAttributes(fallback) });
+  if (result.ok) {
+    return {
+      ok: true,
+      status: result.status,
+      data: result.data,
+      droppedAttributes: Object.keys(cleanAttributes(attributes)).filter((k) => !STANDARD_ATTRS.has(k) && k !== 'INTAKE_ROLE'),
+    };
   }
 
   return { ok: false, status: last.status, data: last.data };
