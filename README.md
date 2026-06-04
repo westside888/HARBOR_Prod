@@ -44,6 +44,10 @@ Required commit on `main`: **`5d194f1`** or later (includes `package.json` and `
 
 For other hosts, serve the repo root (or `dist/` after running `npm run build`) so `index.html` is the default document.
 
+## Google Analytics
+
+GA4 is optional and enabled at build time via the `GA_MEASUREMENT_ID` environment variable. See [ANALYTICS.md](ANALYTICS.md) for finding the old property ID and Cloudflare setup.
+
 ## Brevo intake CRM
 
 The intake form posts to `/api/intake` (Cloudflare Pages Function) and triggers Brevo double opt-in. See [BREVO_SETUP.md](BREVO_SETUP.md) for API keys, attribute creation, and env vars.
