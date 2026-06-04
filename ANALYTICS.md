@@ -11,7 +11,7 @@ The new static site does **not** include Google Analytics until you add a GA4 Me
    - **Web** data stream → URL `https://warriorsinneed.org`
    - Copy the new Measurement ID.
 
-**Tip:** Donation links on the site include Givebutter tracking parameters with `_ga_29528SEPCL`. That may match an existing WIN property — confirm the ID in Analytics Admin; do not guess.
+**WIN property (confirmed):** `G-29528SEPCL` — web stream `https://warriorsinneed.org` (stream ID `12338434398`).
 
 ## Step 2 — Enable tracking on Cloudflare Pages
 

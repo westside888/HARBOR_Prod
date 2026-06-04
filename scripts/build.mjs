@@ -9,7 +9,8 @@ const out = join(root, 'dist');
 rmSync(out, { recursive: true, force: true });
 mkdirSync(out, { recursive: true });
 
-const gaId = process.env.GA_MEASUREMENT_ID || '';
+// WIN GA4 web stream (warriorsinneed.org) — override with GA_MEASUREMENT_ID env if needed
+const gaId = process.env.GA_MEASUREMENT_ID || 'G-29528SEPCL';
 
 function copyHtmlWithOptionalGa(srcName) {
   const srcPath = join(root, srcName);
