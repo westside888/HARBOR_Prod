@@ -9,22 +9,25 @@
   };
 
   function openGivebutter() {
-    const btn =
+    const gb =
       document.querySelector('#givebutter-donate-btn') ||
       document.querySelector('givebutter-button');
-    if (btn) {
-      btn.click();
+    const inner = gb?.shadowRoot?.querySelector('button, a[role="button"]');
+    if (inner) {
+      inner.click();
       return;
     }
     window.open(GIVEBUTTER_FALLBACK, '_blank', 'noopener');
   }
 
-  document.querySelectorAll('.js-givebutter-donate, .donate-btn, .donate-cta-bar').forEach((el) => {
+  document.querySelectorAll('.js-givebutter-donate').forEach((el) => {
     if (el.tagName === 'A') {
-      el.setAttribute('href', '#');
-      el.classList.add('js-givebutter-donate');
+      el.setAttribute('href', GIVEBUTTER_FALLBACK);
+      el.setAttribute('target', '_blank');
+      el.setAttribute('rel', 'noopener noreferrer');
     }
     el.addEventListener('click', (e) => {
+      if (el.tagName === 'A') return;
       e.preventDefault();
       openGivebutter();
     });

@@ -1,6 +1,7 @@
 import { LABEL_TO_BREVO, LIST_IDS } from '../lib/brevo-attributes.js';
 import { FIELD_KEY_TO_LABEL } from '../lib/field-keys.js';
 import { upsertBrevoContact } from '../lib/brevo-contact.js';
+import { resolveNewsletterListId } from '../lib/brevo-lists.js';
 import {
   buildInternalNotificationEmail,
   buildSubmitterConfirmationEmail,
@@ -123,10 +124,18 @@ export async function onRequestPost(context) {
     );
     if (phone) attributes.SMS = phone;
 
+    const listIds = [listId];
+    if (role === 'supporter') {
+      const newsletterList = await resolveNewsletterListId(apiKey, env);
+      if (newsletterList.ok && newsletterList.id && !listIds.includes(newsletterList.id)) {
+        listIds.push(newsletterList.id);
+      }
+    }
+
     const result = await upsertBrevoContact({
       apiKey,
       email,
-      listIds: [listId],
+      listIds,
       attributes,
     });
 
