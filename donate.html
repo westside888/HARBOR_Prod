@@ -48,6 +48,11 @@ nav.scrolled { background: rgba(8,8,7,.92); backdrop-filter: blur(14px); }
 }
 .btn-primary:hover { background: #c5df30; }
 
+givebutter-button.gb-donate {
+  display: inline-block;
+  --gb-button-font-family: 'Barlow Condensed', sans-serif;
+}
+
 .eyebrow {
   font-family: 'Barlow Condensed', sans-serif; font-size: var(--text-ui);
   font-weight: 600; letter-spacing: .32em; text-transform: uppercase; color: var(--olive-hi);
@@ -193,13 +198,6 @@ section { padding: 5.5rem 3rem; border-bottom: 1px solid rgba(255,255,255,.06); 
   letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-top: .25rem;
 }
 
-.givebutter-note {
-  margin-top: 1.5rem; padding: .85rem 1rem; border: 1px dashed rgba(201,162,39,.45);
-  background: rgba(201,162,39,.06); font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.75rem; letter-spacing: .08em; text-transform: uppercase; color: rgba(201,162,39,.85);
-  text-align: center;
-}
-.givebutter-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 
 footer {
   display: flex; justify-content: space-between; align-items: center;
@@ -242,7 +240,17 @@ footer a:hover { color: var(--olive-hi); }
     <p class="copy">But when they leave military service, gaps in guidance, certification, funding, and employer connections can stand between their military experience and the civilian careers they're ready to begin.</p>
     <p class="copy"><strong>Warriors In Need (WIN) bridges that gap.</strong></p>
     <div class="hero-cta">
-      <button type="button" class="btn-primary js-donate">Donate ↗</button>
+      <givebutter-button
+        class="gb-donate"
+        campaign="WIN-General-Donation-Page"
+        label="Donate ↗"
+        background-color="#adc22a"
+        label-color="#080807"
+        border-radius="0"
+        drop-shadow="false"
+        icon="none"
+        type="modal"
+      ></givebutter-button>
     </div>
   </div>
 </section>
@@ -325,7 +333,17 @@ footer a:hover { color: var(--olive-hi); }
     <p class="copy"><strong>Their service may be ending. Their mission isn't.</strong></p>
 
     <div style="margin-top:2rem;">
-      <button type="button" class="btn-primary js-donate">Donate ↗</button>
+      <givebutter-button
+        class="gb-donate"
+        campaign="WIN-General-Donation-Page"
+        label="Donate ↗"
+        background-color="#adc22a"
+        label-color="#080807"
+        border-radius="0"
+        drop-shadow="false"
+        icon="none"
+        type="modal"
+      ></givebutter-button>
     </div>
   </div>
 </section>
@@ -348,22 +366,9 @@ footer a:hover { color: var(--olive-hi); }
   <a href="/">Home</a>
 </footer>
 
-<div class="givebutter-hidden" aria-hidden="true">
-  <givebutter-button id="givebutter-donate-btn" campaign="WIN-General-Donation-Page"></givebutter-button>
-</div>
-
 <script>
 const nav = document.getElementById('sitenav');
 window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40), { passive: true });
-
-const FALLBACK = 'https://givebutter.com/WIN-General-Donation-Page';
-document.querySelectorAll('.js-donate').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    const gb = document.getElementById('givebutter-donate-btn');
-    if (gb) { gb.click(); return; }
-    window.open(FALLBACK, '_blank', 'noopener');
-  });
-});
 </script>
 </body>
 </html>
