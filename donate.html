@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Donate — Warriors In Need</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;500;600;700&family=Barlow:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet"/>
+<script async src="https://widgets.givebutter.com/latest.umd.cjs"></script>
+<style>
+:root {
+  --olive: #6e7d14;
+  --olive-hi: #adc22a;
+  --olive-dark: #4a5810;
+  --black: #080807;
+  --sand: #e8e2d4;
+  --white: #f4f1eb;
+  --gold: #c9a227;
+  --ease-film: cubic-bezier(0.16, 1, 0.3, 1);
+  --text-body: clamp(1rem, 0.12vw + 0.95rem, 1.125rem);
+  --text-ui: clamp(0.875rem, 0.08vw + 0.82rem, 1rem);
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { background: var(--black); font-size: clamp(106.25%, 0.35vw + 100%, 125%); scroll-behavior: smooth; }
+body { font-family: 'Barlow', sans-serif; background: var(--black); color: var(--sand); overflow-x: hidden; }
+
+nav {
+  position: fixed; inset: 0 0 auto; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 3rem; min-height: 58px; transition: background .6s ease;
+}
+nav.scrolled { background: rgba(8,8,7,.92); backdrop-filter: blur(14px); }
+.nav-logo { height: 78px; width: auto; display: block; }
+.nav-home {
+  font-family: 'Barlow Condensed', sans-serif; font-size: var(--text-ui);
+  font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(255,255,255,.45); text-decoration: none;
+}
+.nav-home:hover { color: var(--olive-hi); }
+
+.btn-primary {
+  font-family: 'Barlow Condensed', sans-serif; font-size: var(--text-ui);
+  font-weight: 700; letter-spacing: .28em; text-transform: uppercase;
+  color: var(--black); background: var(--olive-hi); border: none; cursor: pointer;
+  text-decoration: none; padding: .9rem 2.2rem; display: inline-flex; align-items: center; gap: .5rem;
+  transition: background .3s;
+}
+.btn-primary:hover { background: #c5df30; }
+
+.eyebrow {
+  font-family: 'Barlow Condensed', sans-serif; font-size: var(--text-ui);
+  font-weight: 600; letter-spacing: .32em; text-transform: uppercase; color: var(--olive-hi);
+  margin-bottom: .8rem;
+}
+.section-rule { width: 48px; height: 1px; background: var(--olive); margin-bottom: 2rem; }
+.headline {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  line-height: .92; letter-spacing: .03em; color: var(--white); margin-bottom: 1.25rem;
+}
+.headline em { color: var(--olive-hi); font-style: normal; }
+.copy { font-size: var(--text-body); font-weight: 300; line-height: 1.78; color: rgba(255,255,255,.62); max-width: 62ch; }
+.copy + .copy { margin-top: 1rem; }
+.copy strong { color: var(--olive-hi); font-weight: 600; }
+
+#hero {
+  position: relative; min-height: 92svh;
+  display: flex; align-items: flex-end;
+  padding: max(5rem, calc(58px + env(safe-area-inset-top))) 3rem 4rem;
+}
+.hero-bg { position: absolute; inset: 0; z-index: 0; }
+.hero-bg img {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: center center;
+}
+.hero-grade {
+  position: absolute; inset: 0; z-index: 1;
+  background: rgba(0, 0, 0, 0.2);
+}
+.hero-inner { position: relative; z-index: 2; max-width: 880px; }
+.hero-kicker {
+  font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.1rem, 2vw, 1.35rem);
+  letter-spacing: .14em; color: var(--olive-hi); margin-bottom: .75rem;
+}
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.8rem, 7vw, 5.2rem);
+  line-height: .95; color: var(--white); margin-bottom: 1.25rem;
+}
+.hero-cta { margin-top: 2rem; }
+
+section { padding: 5.5rem 3rem; border-bottom: 1px solid rgba(255,255,255,.06); }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; }
+.center { text-align: center; }
+.center .section-rule, .center .copy { margin-left: auto; margin-right: auto; }
+
+.pull-quote {
+  margin-top: 1.5rem; padding-left: 1.25rem; border-left: 3px solid var(--olive);
+  font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.5rem, 3vw, 2.2rem);
+  line-height: 1.15; color: var(--olive-hi);
+}
+
+#documentary { padding-top: 0; padding-bottom: 5rem; }
+.video-band {
+  position: relative; width: 100%; aspect-ratio: 16/9; max-height: min(52vh, 540px);
+  overflow: hidden; background: #111;
+}
+.video-band img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.6); }
+.video-play {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 1rem; text-decoration: none;
+}
+.video-play-ring {
+  width: 72px; height: 72px; border: 2px solid rgba(255,255,255,.85); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.video-play-ring::after {
+  content: ''; border-style: solid; border-width: 10px 0 10px 16px;
+  border-color: transparent transparent transparent rgba(255,255,255,.9); margin-left: 4px;
+}
+.video-label {
+  font-family: 'Barlow Condensed', sans-serif; font-size: var(--text-ui);
+  font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.75);
+}
+
+#bridge { background: #0d1103; }
+#bridge::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(135deg, rgba(110,125,20,.12) 0%, transparent 55%);
+}
+#bridge .section-inner { position: relative; }
+
+#impact {
+  background: var(--olive-dark);
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+}
+#impact .copy { color: rgba(255, 255, 255, 0.78); }
+#impact .section-rule { background: var(--olive-hi); }
+
+.tier-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px;
+  background: rgba(0, 0, 0, 0.22); margin: 2.5rem 0;
+}
+.tier-card {
+  background: rgba(8, 8, 7, 0.55); padding: 1.5rem 1rem; text-align: center;
+  transition: background .35s;
+}
+.tier-card:hover { background: rgba(8, 8, 7, 0.72); }
+.tier-card.featured { background: rgba(8, 8, 7, 0.68); border: 1px solid rgba(173, 194, 42, 0.35); }
+.tier-amt {
+  font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.35rem, 2vw, 1.75rem);
+  letter-spacing: .04em; color: var(--white); margin-bottom: .5rem;
+}
+.tier-amt.olive { color: var(--olive-hi); }
+.tier-lbl {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 0.8125rem; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.45); line-height: 1.45;
+}
+
+.monthly-box {
+  margin-top: 2.5rem; padding: 2rem; border: 1px solid rgba(173,194,42,.35);
+  background: rgba(8, 8, 7, 0.35);
+}
+.monthly-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: .04em;
+  color: var(--olive-hi); margin-bottom: .75rem;
+}
+.monthly-list { list-style: none; display: grid; gap: .75rem; margin-top: 1rem; }
+.monthly-list li {
+  font-size: var(--text-body); color: rgba(255,255,255,.58); line-height: 1.55;
+  padding-left: 1rem; border-left: 2px solid rgba(173,194,42,.35);
+}
+.monthly-list strong { color: var(--olive-hi); }
+
+#founder { display: grid; grid-template-columns: 220px 1fr; gap: 2rem; align-items: center; max-width: 720px; margin: 0 auto; }
+.founder-photo {
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.12);
+  background: var(--black);
+}
+.founder-photo img {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: center 12%;
+  display: block;
+}
+.founder-sign { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--olive-hi); }
+.founder-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--white); }
+.founder-title {
+  font-family: 'Barlow Condensed', sans-serif; font-size: var(--text-ui);
+  letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-top: .25rem;
+}
+
+.givebutter-note {
+  margin-top: 1.5rem; padding: .85rem 1rem; border: 1px dashed rgba(201,162,39,.45);
+  background: rgba(201,162,39,.06); font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem; letter-spacing: .08em; text-transform: uppercase; color: rgba(201,162,39,.85);
+  text-align: center;
+}
+.givebutter-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.4rem 3rem; border-top: 1px solid rgba(255,255,255,.06);
+}
+footer a { color: rgba(255,255,255,.35); text-decoration: none; font-family: 'Barlow Condensed', sans-serif; font-size: var(--text-ui); letter-spacing: .18em; text-transform: uppercase; }
+footer a:hover { color: var(--olive-hi); }
+
+@media (max-width: 980px) {
+  nav, section, footer, #hero { padding-left: 1.4rem; padding-right: 1.4rem; }
+  .grid-2 { grid-template-columns: 1fr; gap: 2rem; }
+  .tier-grid { grid-template-columns: repeat(2, 1fr); }
+  #founder { grid-template-columns: 1fr; max-width: 320px; }
+  footer { flex-direction: column; gap: .75rem; text-align: center; }
+}
+@media (max-width: 580px) { .tier-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav id="sitenav">
+  <a href="/" aria-label="Warriors In Need home"><img src="/assets/images/win-logo-nav.png" alt="Warriors In Need" class="nav-logo" width="249" height="109"/></a>
+  <a href="/" class="nav-home">← Back to Home</a>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg">
+    <img
+      src="/assets/images/donate-hero-hangar.jpg"
+      alt=""
+      loading="eager"
+    />
+  </div>
+  <div class="hero-grade"></div>
+  <div class="hero-inner">
+    <p class="hero-kicker">America Already Trained Them.</p>
+    <h1 class="hero-title">Let's Put Their Skills To Work<br><span style="color:var(--olive-hi)">Let's Build This Bridge</span></h1>
+    <p class="copy">Help veteran aviation mechanics overcome the barriers between years of military experience and rewarding civilian aviation careers.</p>
+    <p class="copy">Veteran aviation mechanics have spent years keeping some of the world's most sophisticated aircraft flying. They have the skills, discipline, and experience our civilian aviation industry urgently needs.</p>
+    <p class="copy">But when they leave military service, gaps in guidance, certification, funding, and employer connections can stand between their military experience and the civilian careers they're ready to begin.</p>
+    <p class="copy"><strong>Warriors In Need (WIN) bridges that gap.</strong></p>
+    <div class="hero-cta">
+      <button type="button" class="btn-primary js-donate">Donate ↗</button>
+    </div>
+  </div>
+</section>
+
+<section id="documentary">
+  <div class="section-inner">
+    <div class="eyebrow">An Untapped Resource. An Urgent Need.</div>
+    <div class="section-rule"></div>
+    <h2 class="headline">America Has Already <em>Invested</em></h2>
+    <p class="copy">America's civilian aviation industry needs skilled technicians. At the same time, highly trained military aviation mechanics are leaving active duty with years of experience and looking for their next mission.</p>
+    <p class="copy">As WIN Founder Ben Ingram says in our short documentary, <em>"Our entire veteran community is an incredible, untapped resource, and we can solve massive problems if we tap into that resource that taxpayers' dollars have funded. Every one of us has invested."</em></p>
+    <p class="copy">America has already invested in developing their skills. WIN helps ensure that investment continues to benefit our veterans, our aviation industry, and our nation.</p>
+  </div>
+  <a class="video-band" href="https://www.youtube.com/watch?v=a2Irl5gst2w" target="_blank" rel="noopener" style="display:block;margin-top:2.5rem;" aria-label="Watch the 7-minute documentary">
+    <img src="https://i.ytimg.com/vi/a2Irl5gst2w/maxresdefault.jpg" alt="WIN Mission Trailer"/>
+    <span class="video-play">
+      <span class="video-play-ring"></span>
+      <span class="video-label">Watch the 7-Minute Documentary</span>
+    </span>
+  </a>
+</section>
+
+<section id="bridge">
+  <div class="section-inner grid-2">
+    <div>
+      <div class="eyebrow">The Path Forward</div>
+      <div class="section-rule"></div>
+      <h2 class="headline">WIN Bridges The Gap From Military Service To A <em>Rewarding Civilian Career</em></h2>
+    </div>
+    <div>
+      <p class="copy">Veteran aviation mechanics leave military service with years of experience, but translating that experience into a civilian aviation career isn't always straightforward.</p>
+      <p class="copy">WIN helps veterans navigate the path forward, from mentoring and FAA certification preparation to financial assistance, professional tools, and connections with employers who value their skills.</p>
+      <p class="copy"><strong>We also fill a critical funding gap.</strong> While the VA and other organizations primarily fund traditional Part 147 aviation schools, many experienced veterans only need shorter Part 65 FAA preparation. That training, along with lodging, testing costs, and the professional tools needed to begin work, is not consistently covered.</p>
+    </div>
+  </div>
+</section>
+
+<section id="built-bridge">
+  <div class="section-inner grid-2">
+    <div>
+      <div class="eyebrow">Our Conviction</div>
+      <div class="section-rule"></div>
+      <h2 class="headline">We Built The Bridge So Veterans Can <em>Cross</em></h2>
+    </div>
+    <div>
+      <p class="copy">WIN was born from a simple conviction: when you've made it through a difficult transition, you have a responsibility to help those coming behind you.</p>
+      <p class="copy">We've lived the uncertainty and learned where the barriers exist. So we created the guidance, resources, financial support, and employer connections we wish we'd had when we transitioned from military service.</p>
+      <p class="copy">Through our <strong>Evaluate → Prepare → Invest → Connect</strong> model, WIN helps veterans understand their opportunities, prepare for FAA certification, overcome financial barriers, and connect with aviation employers who need their skills.</p>
+      <p class="pull-quote">We don't rescue veterans. We equip them to take the skills they've already earned into their next mission.</p>
+    </div>
+  </div>
+</section>
+
+<section id="impact">
+  <div class="section-inner center">
+    <div class="eyebrow">Let's Put Their Skills To Work</div>
+    <div class="section-rule"></div>
+    <h2 class="headline">Your Gift <em>Removes Barriers</em></h2>
+    <p class="copy">Your gift removes the barriers standing between a veteran's military experience and a rewarding civilian aviation career. You're not paying to teach veterans skills they don't have. You're helping unlock the skills they've already spent years developing.</p>
+
+    <div class="tier-grid">
+      <div class="tier-card"><div class="tier-amt">$100</div><div class="tier-lbl">Joins with others to remove another barrier</div></div>
+      <div class="tier-card"><div class="tier-amt olive">$500</div><div class="tier-lbl">Funds FAA certification study materials</div></div>
+      <div class="tier-card"><div class="tier-amt">$6,000</div><div class="tier-lbl">Removes barriers such as FAA preparation, testing, lodging, or professional tools</div></div>
+      <div class="tier-card"><div class="tier-amt olive">$12,500</div><div class="tier-lbl">Sponsors one veteran's complete transition into a civilian aviation career</div></div>
+      <div class="tier-card featured"><div class="tier-amt olive">$125,000</div><div class="tier-lbl">Sponsors an entire cohort</div></div>
+    </div>
+
+    <div class="monthly-box">
+      <div class="monthly-title">Become a Monthly Mission Partner</div>
+      <p class="copy" style="max-width:100%;">A recurring monthly gift provides the dependable support that allows WIN to help veterans year-round.</p>
+      <ul class="monthly-list">
+        <li><strong>$25/month</strong> — Helps remove barriers as they arise.</li>
+        <li><strong>$50/month</strong> — Provides ongoing support for veterans throughout the certification process.</li>
+        <li><strong>$100/month</strong> — Becomes part of the foundation that helps veterans reach their next mission.</li>
+      </ul>
+    </div>
+
+    <p class="copy" style="margin-top:2rem;">Every successful transition strengthens a veteran and their family, helps meet a critical aviation workforce need, and ensures that America's investment in our service members continues to serve our nation.</p>
+    <p class="copy"><strong>Their service may be ending. Their mission isn't.</strong></p>
+
+    <div style="margin-top:2rem;">
+      <button type="button" class="btn-primary js-donate">Donate ↗</button>
+    </div>
+  </div>
+</section>
+
+<section id="founder-wrap" style="border-bottom:none;">
+  <div id="founder">
+    <div class="founder-photo">
+      <img src="/assets/images/ben-ingram.jpg" alt="Ben Ingram, Founder and President of Warriors In Need" loading="lazy" width="440" height="587"/>
+    </div>
+    <div>
+      <div class="founder-sign">Semper Fi,</div>
+      <div class="founder-name">Ben Ingram</div>
+      <div class="founder-title">Founder &amp; President · Warriors In Need</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span style="font-family:'Bebas Neue',sans-serif;letter-spacing:.1em;color:rgba(255,255,255,.3);">WIN · Warriors In Need</span>
+  <a href="/">Home</a>
+</footer>
+
+<div class="givebutter-hidden" aria-hidden="true">
+  <givebutter-button id="givebutter-donate-btn" campaign="WIN-General-Donation-Page"></givebutter-button>
+</div>
+
+<script>
+const nav = document.getElementById('sitenav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40), { passive: true });
+
+const FALLBACK = 'https://givebutter.com/WIN-General-Donation-Page';
+document.querySelectorAll('.js-donate').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const gb = document.getElementById('givebutter-donate-btn');
+    if (gb) { gb.click(); return; }
+    window.open(FALLBACK, '_blank', 'noopener');
+  });
+});
+</script>
+</body>
+</html>

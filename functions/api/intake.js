@@ -45,12 +45,14 @@ function normalizeFields(raw) {
 }
 
 function listIdForRole(role, env) {
+  const normalized = role === 'supporter' ? 'donor' : role;
   const fromEnv = {
     veteran: env.BREVO_LIST_VETERAN,
     employer: env.BREVO_LIST_EMPLOYER,
     donor: env.BREVO_LIST_DONOR,
-  }[role];
-  const id = parseInt(fromEnv || LIST_IDS[role], 10);
+    supporter: env.BREVO_LIST_DONOR,
+  }[normalized];
+  const id = parseInt(fromEnv || LIST_IDS[normalized], 10);
   return Number.isFinite(id) ? id : null;
 }
 

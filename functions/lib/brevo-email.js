@@ -57,6 +57,7 @@ const ROLE_LABELS = {
   veteran: 'Veteran',
   employer: 'Employer',
   donor: 'Donor',
+  supporter: 'Supporter',
 };
 
 function escapeHtml(value) {

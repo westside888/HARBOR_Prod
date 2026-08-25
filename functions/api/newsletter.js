@@ -1,5 +1,6 @@
 import { upsertBrevoContact } from '../lib/brevo-contact.js';
 import { resolveNewsletterListId } from '../lib/brevo-lists.js';
+import { buildBrandedEmailHtml, sendBrevoEmail } from '../lib/brevo-email.js';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -64,8 +65,9 @@ export async function onRequestPost(context) {
 
     const firstName = String(body.firstName || body.first_name || '').trim();
     const lastName = String(body.lastName || body.last_name || '').trim();
+    const source = String(body.source || 'website newsletter').trim();
 
-    const attributes = { INTAKE_ROLE: 'newsletter', METHOD_OF_DISCOVERY: 'website newsletter' };
+    const attributes = { INTAKE_ROLE: 'newsletter', METHOD_OF_DISCOVERY: source };
     if (firstName) attributes.FIRSTNAME = firstName;
     if (lastName) attributes.LASTNAME = lastName;
 
@@ -77,6 +79,22 @@ export async function onRequestPost(context) {
     });
 
     if (result.ok) {
+      const notifyEmail = env.BREVO_NOTIFY_EMAIL || env.BREVO_SENDER_EMAIL;
+      if (notifyEmail && (firstName || lastName)) {
+        const name = [firstName, lastName].filter(Boolean).join(' ') || email;
+        await sendBrevoEmail({
+          apiKey,
+          senderEmail: env.BREVO_SENDER_EMAIL || notifyEmail,
+          to: [notifyEmail],
+          subject: `New contact signup — ${name}`,
+          htmlContent: buildBrandedEmailHtml({
+            title: 'New contact signup',
+            bodyHtml: `<p style="margin:0 0 12px;"><strong>${name}</strong> joined via ${source}.</p><p style="margin:0;">Email: ${email}</p>`,
+          }),
+          replyTo: email,
+        });
+      }
+
       return json(headers, 200, {
         ok: true,
         message: "You're subscribed! Thank you for joining our newsletter.",

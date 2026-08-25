@@ -158,6 +158,9 @@ async function submitIntakeForm(e) {
         window.openIntakeSuccessModal(thanksMsg);
       }
       form.reset();
+      if (typeof window.closeIntakeModal === 'function') {
+        setTimeout(() => window.closeIntakeModal(), 800);
+      }
     } else {
       showIntakeMessage(
         data.message ||

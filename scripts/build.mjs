@@ -21,6 +21,7 @@ function copyHtmlWithOptionalGa(srcName) {
 
 copyHtmlWithOptionalGa('index.html');
 copyHtmlWithOptionalGa('win-avtech.html');
+copyHtmlWithOptionalGa('donate.html');
 
 const winStoriesDir = join(out, 'win-stories');
 mkdirSync(winStoriesDir, { recursive: true });
