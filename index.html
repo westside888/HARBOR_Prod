@@ -504,36 +504,37 @@ blockquote .lni {
   transform: translateX(-100%);
 }
 .step {
-  padding: 1.8rem 0;
-  border-top: 1px solid rgba(0,0,0,.1);
-  display: grid;
-  grid-template-columns: 2.4rem 1fr;
-  gap: 0 1.4rem;
+  padding: 0 0 3.2rem;
   opacity: 0;
 }
-.step:last-child { border-bottom: 1px solid rgba(0,0,0,.1); }
-.sn {
+.step:last-child { padding-bottom: 0; }
+.s-head {
+  display: flex;
+  align-items: baseline;
+  gap: .6rem;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 0.9625rem;
-  letter-spacing: .08em;
-  color: var(--olive);
-  padding-top: .15rem;
+  font-size: 1.9rem;
+  letter-spacing: .05em;
+  line-height: 1;
+  margin-bottom: .9rem;
 }
-.st {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.3625rem;
-  letter-spacing: .04em;
-  color: var(--near-black);
-  line-height:1;
-  margin-bottom: .4rem;
+.sn { color: var(--olive); }
+.s-dash {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 300;
+  color: rgba(0,0,0,.3);
 }
+.st { color: var(--near-black); }
 .sd {
-  font-size: 0.975rem;
-  font-weight: 500;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: rgba(0,0,0,.62);
+  font-size: 1.1875rem;
+  font-weight: 400;
+  color: rgba(0,0,0,.66);
   line-height:1.5;
+}
+@media (max-width: 860px) {
+  .step { padding-bottom: 2.4rem; }
+  .s-head { font-size: 1.6rem; margin-bottom: .6rem; }
+  .sd { font-size: 1.0625rem; }
 }
 
 /* Partners */
@@ -3068,20 +3069,24 @@ a, button, .intake-role, .petition-doc-btn, .fin-990-btn {
       </h2>
       <div>
         <div class="step" id="s1">
-          <div class="sn">01</div>
-          <div><div class="st">Evaluate</div><div class="sd">Identify qualified military aviation maintainers through targeted outreach, strategic partnerships, and veteran engagement initiatives. Includes candidate recruitment, eligibility assessment, FAA pathway evaluation, and career planning.</div></div>
+          <div class="s-head"><span class="sn">01</span><span class="s-dash">—</span><span class="st">Evaluate</span></div>
+          <div class="sd">Identify experience.</div>
+          <div class="sd">Map the FAA pathway.</div>
         </div>
         <div class="step" id="s2">
-          <div class="sn">02</div>
-          <div><div class="st">Prepare</div><div class="sd">Prepare candidates for FAA certification by coordinating documentation, study planning, testing readiness, and individualized transition guidance. Activities include FAA eligibility documentation, certification planning, study resources, test preparation coordination, and transition coaching.</div></div>
+          <div class="s-head"><span class="sn">02</span><span class="s-dash">—</span><span class="st">Prepare</span></div>
+          <div class="sd">Build the plan.</div>
+          <div class="sd">Prepare for certification.</div>
         </div>
         <div class="step" id="s3">
-          <div class="sn">03</div>
-          <div><div class="st">Invest</div><div class="sd">Strategically invest in the portions of the certification journey that existing military education benefits and VA programs often do not fully cover — including FAA certification preparation courses, written and practical examination fees, travel and lodging assistance, study materials, and professional aviation tools.</div></div>
+          <div class="s-head"><span class="sn">03</span><span class="s-dash">—</span><span class="st">Invest</span></div>
+          <div class="sd">Fund critical gaps.</div>
+          <div class="sd">Remove barriers.</div>
         </div>
         <div class="step" id="s4">
-          <div class="sn">04</div>
-          <div><div class="st">Connect</div><div class="sd">Connect prepared candidates with employer partners through coordinated introductions, workforce planning discussions, mentorship opportunities, and ongoing transition support. Whenever possible, introductions begin before military separation, creating opportunities to utilize the DoD SkillBridge Program.</div></div>
+          <div class="s-head"><span class="sn">04</span><span class="s-dash">—</span><span class="st">Connect</span></div>
+          <div class="sd">Connect with employers.</div>
+          <div class="sd">Build the next mission.</div>
         </div>
       </div>
     </div>
