@@ -146,7 +146,10 @@
 
     setIntakeOverlayCopy(roleKey);
     intakeOverlayBody.appendChild(intakeRight);
+    intakeRight.classList.remove('reveal-col-right');
     intakeRight.style.display = '';
+    intakeRight.style.opacity = '1';
+    intakeRight.style.transform = 'none';
     openOverlay(intakeOverlay, intakeOverlay.querySelector('.overlay-close'));
 
     requestAnimationFrame(() => {

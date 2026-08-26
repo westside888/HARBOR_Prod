@@ -77,7 +77,8 @@ nav.scrolled { background: rgba(8,8,7,.92); backdrop-filter: blur(14px); }
   position: absolute; inset: 0; z-index: 1;
   background: rgba(0, 0, 0, 0.2);
 }
-.hero-inner { position: relative; z-index: 2; max-width: 880px; }
+.hero-inner { position: relative; z-index: 2; width: 100%; max-width: 1100px; margin: 0 auto; }
+.hero-inner .copy, .hero-inner .hero-title { max-width: 62ch; }
 .hero-kicker {
   font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.1rem, 2vw, 1.35rem);
   letter-spacing: .14em; color: var(--olive-hi); margin-bottom: .75rem;
@@ -101,10 +102,9 @@ section { padding: 5.5rem 3rem; border-bottom: 1px solid rgba(255,255,255,.06); 
   line-height: 1.15; color: var(--olive-hi);
 }
 
-#documentary { padding-top: 0; padding-bottom: 5rem; }
 .video-band {
   position: relative; width: 100%; aspect-ratio: 16/9; max-height: min(52vh, 540px);
-  overflow: hidden; background: #111;
+  overflow: hidden; background: #111; margin-top: 2.5rem;
 }
 .video-band img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.6); }
 .video-play {
@@ -202,10 +202,33 @@ footer a:hover { color: var(--olive-hi); }
 
 @media (max-width: 980px) {
   nav, section, footer, #hero { padding-left: 1.4rem; padding-right: 1.4rem; }
+  /* Hero copy is tall on phones — let it flow below the nav instead of bottom-anchoring */
+  #hero { min-height: 0; align-items: flex-start; padding-top: calc(58px + 3rem); padding-bottom: 3.5rem; }
+  .nav-logo { height: 58px; }
   .grid-2 { grid-template-columns: 1fr; gap: 2rem; }
   .tier-grid { grid-template-columns: repeat(2, 1fr); }
   #founder { grid-template-columns: 1fr; max-width: 320px; }
   footer { flex-direction: column; gap: .75rem; text-align: center; }
+}
+@media (max-width: 860px) {
+  .btn-primary {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--olive-hi);
+    border: 1px solid var(--olive-hi);
+    border-radius: 0;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    padding: .75rem 1.25rem;
+    text-align: center;
+  }
 }
 @media (max-width: 580px) { .tier-grid { grid-template-columns: 1fr; } }
 </style>
@@ -247,14 +270,14 @@ footer a:hover { color: var(--olive-hi); }
     <p class="copy">America's civilian aviation industry needs skilled technicians. At the same time, highly trained military aviation mechanics are leaving active duty with years of experience and looking for their next mission.</p>
     <p class="copy">As WIN Founder Ben Ingram says in our short documentary, <em>"Our entire veteran community is an incredible, untapped resource, and we can solve massive problems if we tap into that resource that taxpayers' dollars have funded. Every one of us has invested."</em></p>
     <p class="copy">America has already invested in developing their skills. WIN helps ensure that investment continues to benefit our veterans, our aviation industry, and our nation.</p>
+    <a class="video-band" href="https://www.youtube.com/watch?v=a2Irl5gst2w" target="_blank" rel="noopener" style="display:block;" aria-label="Watch the 7-minute documentary">
+      <img src="https://i.ytimg.com/vi/a2Irl5gst2w/maxresdefault.jpg" alt="WIN Mission Trailer"/>
+      <span class="video-play">
+        <span class="video-play-ring"></span>
+        <span class="video-label">Watch the 7-Minute Documentary</span>
+      </span>
+    </a>
   </div>
-  <a class="video-band" href="https://www.youtube.com/watch?v=a2Irl5gst2w" target="_blank" rel="noopener" style="display:block;margin-top:2.5rem;" aria-label="Watch the 7-minute documentary">
-    <img src="https://i.ytimg.com/vi/a2Irl5gst2w/maxresdefault.jpg" alt="WIN Mission Trailer"/>
-    <span class="video-play">
-      <span class="video-play-ring"></span>
-      <span class="video-label">Watch the 7-Minute Documentary</span>
-    </span>
-  </a>
 </section>
 
 <section id="bridge">
