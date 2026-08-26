@@ -8,18 +8,18 @@
     supporter: { title: 'Supporter Intake', sub: 'Let us know how you\'d like to help our mission.' },
   };
 
+  /** Click the widget's real button inside its shadow root. Returns false if it isn't ready. */
   function openGivebutter() {
     const gb =
       document.querySelector('#givebutter-donate-btn') ||
       document.querySelector('givebutter-button');
     const inner = gb?.shadowRoot?.querySelector('button, a[role="button"]');
-    if (inner) {
-      inner.click();
-      return;
-    }
-    window.open(GIVEBUTTER_FALLBACK, '_blank', 'noopener');
+    if (!inner) return false;
+    inner.click();
+    return true;
   }
 
+  // The href stays a working fallback for no-JS and for a widget that fails to load.
   document.querySelectorAll('.js-givebutter-donate').forEach((el) => {
     if (el.tagName === 'A') {
       el.setAttribute('href', GIVEBUTTER_FALLBACK);
@@ -27,9 +27,7 @@
       el.setAttribute('rel', 'noopener noreferrer');
     }
     el.addEventListener('click', (e) => {
-      if (el.tagName === 'A') return;
-      e.preventDefault();
-      openGivebutter();
+      if (openGivebutter()) e.preventDefault();
     });
   });
 

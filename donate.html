@@ -210,6 +210,7 @@ footer a:hover { color: var(--olive-hi); }
   #founder { grid-template-columns: 1fr; max-width: 320px; }
   footer { flex-direction: column; gap: .75rem; text-align: center; }
 }
+.givebutter-hidden { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
 @media (max-width: 860px) {
   .btn-primary {
     font-family: 'Barlow Condensed', sans-serif;
@@ -257,7 +258,7 @@ footer a:hover { color: var(--olive-hi); }
     <p class="copy">But when they leave military service, gaps in guidance, certification, funding, and employer connections can stand between their military experience and the civilian careers they're ready to begin.</p>
     <p class="copy"><strong>Warriors In Need (WIN) bridges that gap.</strong></p>
     <div class="hero-cta">
-      <a href="https://givebutter.com/WIN-General-Donation-Page" class="btn-primary" target="_blank" rel="noopener noreferrer">Donate ↗</a>
+      <a href="https://givebutter.com/WIN-General-Donation-Page" class="btn-primary js-givebutter-donate" target="_blank" rel="noopener noreferrer">Donate ↗</a>
     </div>
   </div>
 </section>
@@ -340,7 +341,7 @@ footer a:hover { color: var(--olive-hi); }
     <p class="copy"><strong>Their service may be ending. Their mission isn't.</strong></p>
 
     <div style="margin-top:2rem;">
-      <a href="https://givebutter.com/WIN-General-Donation-Page" class="btn-primary" target="_blank" rel="noopener noreferrer">Donate ↗</a>
+      <a href="https://givebutter.com/WIN-General-Donation-Page" class="btn-primary js-givebutter-donate" target="_blank" rel="noopener noreferrer">Donate ↗</a>
     </div>
   </div>
 </section>
@@ -363,9 +364,24 @@ footer a:hover { color: var(--olive-hi); }
   <a href="/">Home</a>
 </footer>
 
+<script async src="https://widgets.givebutter.com/latest.umd.cjs?acct=R4ACom3m4zJpKvXf"></script>
+<div class="givebutter-hidden" aria-hidden="true"><givebutter-button id="givebutter-donate-btn" campaign="QX0MMT" account="R4ACom3m4zJpKvXf"></givebutter-button></div>
+
 <script>
 const nav = document.getElementById('sitenav');
 window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40), { passive: true });
+
+/* Donate buttons open the GiveButter overlay; the href remains a fallback. */
+document.querySelectorAll('.js-givebutter-donate').forEach((el) => {
+  el.addEventListener('click', (e) => {
+    const gb = document.getElementById('givebutter-donate-btn');
+    const inner = gb?.shadowRoot?.querySelector('button, a[role="button"]');
+    if (inner) {
+      e.preventDefault();
+      inner.click();
+    }
+  });
+});
 </script>
 </body>
 </html>
