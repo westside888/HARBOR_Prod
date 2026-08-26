@@ -372,14 +372,32 @@ const nav = document.getElementById('sitenav');
 window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40), { passive: true });
 
 /* Donate buttons open the GiveButter overlay; the href remains a fallback. */
+const GIVEBUTTER_FALLBACK = 'https://givebutter.com/WIN-General-Donation-Page';
+const GIVEBUTTER_WAIT_MS = 2500;
+
+function openGivebutter() {
+  const gb = document.getElementById('givebutter-donate-btn');
+  const inner = gb?.shadowRoot?.querySelector('button, a[role="button"]');
+  if (!inner) return false;
+  inner.click();
+  return true;
+}
+
+/* A click before the widget loads must not send the visitor off-site, so wait for it. */
 document.querySelectorAll('.js-givebutter-donate').forEach((el) => {
   el.addEventListener('click', (e) => {
-    const gb = document.getElementById('givebutter-donate-btn');
-    const inner = gb?.shadowRoot?.querySelector('button, a[role="button"]');
-    if (inner) {
-      e.preventDefault();
-      inner.click();
-    }
+    e.preventDefault();
+    if (openGivebutter()) return;
+    const deadline = Date.now() + GIVEBUTTER_WAIT_MS;
+    const retry = () => {
+      if (openGivebutter()) return;
+      if (Date.now() >= deadline) {
+        window.location.href = GIVEBUTTER_FALLBACK;
+        return;
+      }
+      setTimeout(retry, 100);
+    };
+    retry();
   });
 });
 </script>

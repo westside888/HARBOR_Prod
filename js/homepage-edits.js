@@ -1,6 +1,8 @@
 /** WIN homepage — GiveButter overlay, intake modal, contact popup, email signup */
 (function () {
   const GIVEBUTTER_FALLBACK = 'https://givebutter.com/WIN-General-Donation-Page';
+  /** How long to wait for the widget before giving up and using the hosted page. */
+  const GIVEBUTTER_WAIT_MS = 2500;
 
   const ROLE_META = {
     veteran: { title: 'Veteran Intake', sub: 'Tell us about your transition — we\'ll connect you with career support.' },
@@ -19,6 +21,26 @@
     return true;
   }
 
+  /**
+   * A click before the widget script has loaded must not send the visitor off-site,
+   * so hold the navigation and keep retrying. Only leave if the widget never arrives,
+   * which means it was blocked or the network is down.
+   */
+  function handleDonateClick(e) {
+    e.preventDefault();
+    if (openGivebutter()) return;
+    const deadline = Date.now() + GIVEBUTTER_WAIT_MS;
+    const retry = () => {
+      if (openGivebutter()) return;
+      if (Date.now() >= deadline) {
+        window.location.href = GIVEBUTTER_FALLBACK;
+        return;
+      }
+      setTimeout(retry, 100);
+    };
+    retry();
+  }
+
   // The href stays a working fallback for no-JS and for a widget that fails to load.
   document.querySelectorAll('.js-givebutter-donate').forEach((el) => {
     if (el.tagName === 'A') {
@@ -26,9 +48,7 @@
       el.setAttribute('target', '_blank');
       el.setAttribute('rel', 'noopener noreferrer');
     }
-    el.addEventListener('click', (e) => {
-      if (openGivebutter()) e.preventDefault();
-    });
+    el.addEventListener('click', handleDonateClick);
   });
 
   const contactOverlay = document.getElementById('contact-overlay');
