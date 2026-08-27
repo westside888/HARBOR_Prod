@@ -504,19 +504,24 @@ blockquote .lni {
   transform: translateX(-100%);
 }
 .step {
-  padding: 0 0 .9rem;
+  display: grid;
+  grid-template-columns: clamp(7.6rem, 9.4vw, 9.2rem) 1fr;
+  gap: 0 .9rem;
+  align-items: baseline;
+  padding: 0 0 3.25rem;
   opacity: 0;
 }
 .step:last-child { padding-bottom: 0; }
+/* Sizes stay fluid so each step holds one line as the panel narrows. */
 .s-head {
   display: flex;
   align-items: baseline;
-  gap: .5rem;
+  gap: .45rem;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.25rem;
+  font-size: clamp(1.2rem, 1.62vw, 1.5rem);
   letter-spacing: .05em;
-  line-height: 1;
-  margin-bottom: .35rem;
+  line-height: 1.15;
+  white-space: nowrap;
 }
 .sn { color: var(--olive); }
 .s-dash {
@@ -526,15 +531,20 @@ blockquote .lni {
 }
 .st { color: var(--near-black); }
 .sd {
-  font-size: .85rem;
+  font-size: clamp(.88rem, 1.2vw, 1.05rem);
   font-weight: 400;
   color: rgba(0,0,0,.66);
   line-height:1.45;
 }
-@media (max-width: 860px) {
-  .step { padding-bottom: 1.6rem; }
-  .s-head { font-size: 1.35rem; margin-bottom: .45rem; }
-  .sd { font-size: .95rem; }
+/* Narrower than this the line can't stay on one row at a readable size, so stack it. */
+@media (max-width: 1360px) {
+  .step {
+    grid-template-columns: 1fr;
+    gap: .3rem;
+    padding-bottom: 1.8rem;
+  }
+  .s-head { font-size: 1.4rem; }
+  .sd { font-size: 1rem; }
 }
 
 /* Partners */
@@ -3069,24 +3079,20 @@ a, button, .intake-role, .petition-doc-btn, .fin-990-btn {
       </h2>
       <div>
         <div class="step" id="s1">
-          <div class="s-head"><span class="sn">01</span><span class="s-dash">—</span><span class="st">Evaluate</span></div>
-          <div class="sd">Identify experience.</div>
-          <div class="sd">Map the FAA pathway.</div>
+          <div class="s-head"><span class="sn">01</span><span class="s-dash">—</span><span class="st">Evaluate:</span></div>
+          <div class="sd">Identify experience. Map the FAA pathway.</div>
         </div>
         <div class="step" id="s2">
-          <div class="s-head"><span class="sn">02</span><span class="s-dash">—</span><span class="st">Prepare</span></div>
-          <div class="sd">Build the plan.</div>
-          <div class="sd">Prepare for certification.</div>
+          <div class="s-head"><span class="sn">02</span><span class="s-dash">—</span><span class="st">Prepare:</span></div>
+          <div class="sd">Build the plan. Prepare for certification.</div>
         </div>
         <div class="step" id="s3">
-          <div class="s-head"><span class="sn">03</span><span class="s-dash">—</span><span class="st">Invest</span></div>
-          <div class="sd">Fund critical gaps.</div>
-          <div class="sd">Remove barriers.</div>
+          <div class="s-head"><span class="sn">03</span><span class="s-dash">—</span><span class="st">Invest:</span></div>
+          <div class="sd">Fund critical gaps. Remove barriers.</div>
         </div>
         <div class="step" id="s4">
-          <div class="s-head"><span class="sn">04</span><span class="s-dash">—</span><span class="st">Connect</span></div>
-          <div class="sd">Connect with employers.</div>
-          <div class="sd">Build the next mission.</div>
+          <div class="s-head"><span class="sn">04</span><span class="s-dash">—</span><span class="st">Connect:</span></div>
+          <div class="sd">Connect with employers. Build the next mission.</div>
         </div>
       </div>
     </div>
