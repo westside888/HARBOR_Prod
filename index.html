@@ -513,6 +513,27 @@ blockquote .lni {
   opacity: 0;
 }
 .step:last-child { padding-bottom: 0; }
+/* Desktop: stretch the four steps to match the partner grid height */
+@media (min-width: 1361px) {
+  .m-left,
+  .m-right {
+    display: flex;
+    flex-direction: column;
+  }
+  .m-lc,
+  .m-rc {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .m-steps {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .step { padding-bottom: 0; }
+}
 /* Sizes stay fluid so each step holds one line as the panel narrows. */
 .s-head {
   display: flex;
@@ -3092,7 +3113,7 @@ a, button, .intake-role, .petition-doc-btn, .fin-990-btn {
       <h2 class="m-hed">
         <span class="t" id="mhed"><span style="color:var(--olive-hi)">What</span> We Do.</span>
       </h2>
-      <div>
+      <div class="m-steps">
         <div class="step" id="s1">
           <div class="s-head"><span class="sn">01</span><span class="s-dash">—</span><span class="st">Evaluate:</span></div>
           <div class="sd">Identify experience. Map the FAA pathway.</div>
