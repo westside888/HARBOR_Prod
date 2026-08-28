@@ -506,13 +506,40 @@ blockquote .lni {
 }
 .step {
   display: grid;
-  grid-template-columns: clamp(7.6rem, 9.4vw, 9.2rem) 1fr;
-  gap: 0 .9rem;
+  grid-template-columns: auto auto 1fr;
+  column-gap: .45rem;
+  row-gap: .35rem;
   align-items: baseline;
-  padding: 0 0 3.25rem;
+  padding: 0 0 1.8rem;
   opacity: 0;
 }
 .step:last-child { padding-bottom: 0; }
+.s-head { display: contents; }
+.sn,
+.st {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.35rem, 1.85vw, 1.75rem);
+  letter-spacing: .05em;
+  line-height: 1.1;
+}
+.sn { color: var(--olive); }
+.s-dash {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 300;
+  font-size: clamp(.95rem, 1.25vw, 1.15rem);
+  color: rgba(0,0,0,.3);
+}
+.st {
+  color: var(--near-black);
+  text-transform: uppercase;
+}
+.sd {
+  grid-column: 3;
+  font-size: clamp(.92rem, 1.12vw, 1.05rem);
+  font-weight: 400;
+  color: rgba(0,0,0,.58);
+  line-height: 1.45;
+}
 /* Desktop: stretch the four steps to match the partner grid height */
 @media (min-width: 1361px) {
   .m-left,
@@ -534,38 +561,10 @@ blockquote .lni {
   }
   .step { padding-bottom: 0; }
 }
-/* Sizes stay fluid so each step holds one line as the panel narrows. */
-.s-head {
-  display: flex;
-  align-items: baseline;
-  gap: .45rem;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(1.2rem, 1.62vw, 1.5rem);
-  letter-spacing: .05em;
-  line-height: 1.15;
-  white-space: nowrap;
-}
-.sn { color: var(--olive); }
-.s-dash {
-  font-family: 'Barlow', sans-serif;
-  font-weight: 300;
-  color: rgba(0,0,0,.3);
-}
-.st { color: var(--near-black); }
-.sd {
-  font-size: clamp(.88rem, 1.2vw, 1.05rem);
-  font-weight: 400;
-  color: rgba(0,0,0,.66);
-  line-height:1.45;
-}
-/* Narrower than this the line can't stay on one row at a readable size, so stack it. */
 @media (max-width: 1360px) {
-  .step {
-    grid-template-columns: 1fr;
-    gap: .3rem;
-    padding-bottom: 1.8rem;
-  }
-  .s-head { font-size: 1.4rem; }
+  .step { padding-bottom: 1.8rem; }
+  .sn,
+  .st { font-size: 1.4rem; }
   .sd { font-size: 1rem; }
 }
 
